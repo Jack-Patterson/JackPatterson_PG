@@ -48,7 +48,7 @@ public class BuildManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.O) && changeSelectedObject == false)
         {
             changeSelectedObject = true;
-            potOffset.y = 10;
+            //potOffset.y = 10;
             objectToBuildGround = groundBuildPrefab;
             return;
         }
