@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Exterior Ground
-  - Interior Ground
+  - BaseGround
+  - PlacedGroundTile
+  - PlacedObject
   layers:
   - Default
   - TransparentFX

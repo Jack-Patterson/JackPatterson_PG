@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3663148538104612170}
   - component: {fileID: 1559999299014019127}
   - component: {fileID: 7040134524251881893}
-  - component: {fileID: -5119280618615941517}
+  - component: {fileID: 94899305305853496}
   m_Layer: 6
   m_Name: Ground Tile
-  m_TagString: Exterior Ground
+  m_TagString: BaseGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5119280618615941517
+--- !u!114 &94899305305853496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,5 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2c3b335d92cb4459d20603c1fa678d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0.14117648}
+  hoverColor: {r: 0, g: 0, b: 0, a: 0}
   offset: {x: 0, y: 0, z: 0}

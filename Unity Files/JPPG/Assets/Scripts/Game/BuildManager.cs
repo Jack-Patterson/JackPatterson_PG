@@ -13,6 +13,12 @@ public class BuildManager : MonoBehaviour
     [Header("Test2")]
     public GameObject interiorBuildPrefab;
 
+    [Header("Test3")]
+    public GameObject otherBuildPrefab;
+
+    [Header("testArray")]
+    private GameObject[] ItemsToBuild;
+
     private GameObject objectToBuildGround;
     private bool changeSelectedObject;
 
@@ -51,6 +57,19 @@ public class BuildManager : MonoBehaviour
             //potOffset.y = 10;
             objectToBuildGround = groundBuildPrefab;
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            objectToBuildGround = groundBuildPrefab;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            objectToBuildGround = interiorBuildPrefab;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            objectToBuildGround = otherBuildPrefab;
         }
     }
 
