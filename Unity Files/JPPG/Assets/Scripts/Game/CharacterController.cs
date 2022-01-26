@@ -6,10 +6,16 @@ public class CharacterController : MonoBehaviour
 {
 
     private float currentSpeed;
+    private float turningSpeed;
+
+    Animator charAnimations;
 
     void Start()
     {
         currentSpeed = 5;
+        turningSpeed = 90;
+
+        charAnimations = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -18,37 +24,66 @@ public class CharacterController : MonoBehaviour
         {
             moveForward();
         }
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            charAnimations.SetBool("isWalkingForward", false);
+            charAnimations.SetBool("isWalkingBackward", false);
+        }
         if (Input.GetKey(KeyCode.DownArrow))
         {
             moveBackwards();
         }
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            charAnimations.SetBool("isWalkingForward", false);
+            charAnimations.SetBool("isWalkingBackward", false);
+        }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            moveLeft();
+            turnLeft();
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            charAnimations.SetBool("isWalkingForward", false);
+            charAnimations.SetBool("isWalkingBackward", false);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            moveRight();
+            turnRight();
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            charAnimations.SetBool("isWalkingForward", false);
+            charAnimations.SetBool("isWalkingBackward", false);
         }
     }
 
     void moveForward()
     {
         transform.position += currentSpeed * transform.forward * Time.deltaTime;
+        charAnimations.SetBool("isWalkingForward", true);
+        charAnimations.SetBool("isWalkingBackward", false);
+
     }
 
     void moveBackwards()
     {
         transform.position += currentSpeed * -transform.forward * Time.deltaTime;
+        charAnimations.SetBool("isWalkingForward", false);
+        charAnimations.SetBool("isWalkingBackward", true);
     }
 
-    void moveLeft()
+    void turnLeft()
     {
-        transform.position += currentSpeed * -transform.right * Time.deltaTime;
+        transform.Rotate(Vector3.up, -turningSpeed * Time.deltaTime);
+        charAnimations.SetBool("isWalkingForward", true);
+        charAnimations.SetBool("isWalkingBackward", false);
     }
 
-    void moveRight()
+    void turnRight()
     {
-        transform.position += currentSpeed * transform.right * Time.deltaTime;
+        transform.Rotate(Vector3.up, turningSpeed * Time.deltaTime);
+        charAnimations.SetBool("isWalkingForward", true);
+        charAnimations.SetBool("isWalkingBackward", false);
     }
 }
