@@ -4,50 +4,80 @@ using UnityEngine;
 
 public class Items : MonoBehaviour
 {
-    [Header("Item Amounts")]
-    public int goldAmount;
-    public int woodAmount;
-    private int stoneAmount;
+    private string itemName;
+    private int amount;
+    private int cost;
+     
+    public Items(string itemName, int amount, int cost)
+    {
+        this.itemName = itemName;
+        this.amount = amount;
+        this.cost = cost;
+    }
+    
 
-    [Header("Items Costs")]
-    public int woodCost;
-    private int stoneCost;
-
-    // Start is called before the first frame update
     void Start()
     {
-        goldAmount = 50;
-        woodAmount = 4;
-        woodCost = 5;
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
-    void payForItem(int itemCost, int itemAmount, int quantity)
+    public string getName()
     {
+        return name;
+    }
+
+    public int getAmount()
+    {
+        return amount;
+    }
+
+    public int getCost()
+    {
+        return cost;
+    }
+
+    public void setName(string itemName)
+    {
+        this.itemName = itemName;
+    }
+
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
+
+    public void setCost(int cost)
+    {
+        this.cost = cost;
+    }
+
+    public void buyItem(int quantity, int totalGold)
+    {
+        int buyCost = getCost();
+        int totalAmount = getAmount();
         int totalCost;
-        int goldCount = getGoldCount();
 
-        totalCost = itemCost * quantity;
+        Debug.Log("Amount " + getAmount());
+        Debug.Log("Cost " + getCost());
 
-        if (goldCount >= totalCost)
+        totalCost = buyCost * quantity;
+        
+        if (totalCost > totalGold)
         {
-            goldCount -= totalCost;
-            itemAmount += quantity;
-            Debug.Log(goldCount + " " + itemAmount);
+            Debug.LogError("Not enough gold");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("Not enough to buy this");
-        }
+
+        totalGold -= totalCost;
+        Debug.Log(totalGold);
+
+        setAmount(totalAmount + quantity);
+        Debug.Log(getAmount());
     }
 
-    int getGoldCount()
-    {
-        return this.goldAmount;
-    }
 }

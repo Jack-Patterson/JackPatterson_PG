@@ -6,7 +6,9 @@ public class ItemsManager : MonoBehaviour
 {
     public static ItemsManager instance;
 
-    
+    Items gold;
+    Items wood;
+    Items stone;
 
     private void Awake()
     {
@@ -20,26 +22,16 @@ public class ItemsManager : MonoBehaviour
 
     void Start()
     {
-        // initialising variables
-        /*goldAmount = 50;
-        woodAmount = 4;
-        woodCost = 5;*/
-        /*stoneAmount = 0;
-        
-        stoneCost = 0;*/
+        gold = new Items("Gold", 50, 1);
+        wood = new Items("Wood", 10, 2);
+        stone = new Items("Stone", 10, 3);
     }
 
     void Update()
     {
-       /* if (Input.GetKeyDown(KeyCode.Q)){
-            Items.payForItem(Items.woodCost, Items.woodAmount, 3);
-        }*/
+       if (Input.GetKeyDown(KeyCode.Z))
+        {
+            wood.buyItem(12, gold.getAmount());
+        }
     }
-
-    /*void addItemAmount (int item, int amount)
-    {
-        item += amount;
-    }*/
-
-    
 }

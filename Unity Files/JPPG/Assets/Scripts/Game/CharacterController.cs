@@ -12,7 +12,7 @@ public class CharacterController : MonoBehaviour
 
     void Start()
     {
-        currentSpeed = 5;
+        currentSpeed = 10;
         turningSpeed = 90;
 
         charAnimations = GetComponentInChildren<Animator>();
