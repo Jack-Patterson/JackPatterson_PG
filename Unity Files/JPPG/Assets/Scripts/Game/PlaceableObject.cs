@@ -8,7 +8,6 @@ public class PlaceableObject : MonoBehaviour
     private Color startColour;
     private GameObject _object;
     private GameObject _tempObject;
-    private bool mode;
 
     public Color hoverColor;
     public Vector3 offset;
@@ -17,12 +16,11 @@ public class PlaceableObject : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         startColour = rend.material.color;
-        mode = false;
     }
 
     private void OnMouseDown()
     {
-        if (mode == false)
+        if (!Manager.instance.getBuildMode())
         {
             return;
         }
@@ -58,7 +56,7 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (mode == false)
+        if (!Manager.instance.getBuildMode())
         {
             return;
         }
@@ -70,7 +68,7 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (mode == false)
+        if (!Manager.instance.getBuildMode())
         {
             return;
         }
@@ -85,14 +83,14 @@ public class PlaceableObject : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && mode == false)
+        if (Input.GetKeyDown(KeyCode.P) && !Manager.instance.getBuildMode())
         {
-            mode = true;
+            Manager.instance.setBuildMode(true);
             return;
         }
-        else if (Input.GetKeyDown(KeyCode.P) && mode == true)
+        else if (Input.GetKeyDown(KeyCode.P) && Manager.instance.getBuildMode())
         {
-            mode = false;
+            Manager.instance.setBuildMode(false);
             rend.material.color = startColour;
             return;
         }
