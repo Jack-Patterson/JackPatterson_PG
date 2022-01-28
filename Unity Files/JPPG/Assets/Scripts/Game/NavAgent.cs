@@ -9,6 +9,8 @@ public class NavAgent : MonoBehaviour {
 
     public NavMeshAgent agent;
 
+    public AICharacterMove aICharacterMove;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,15 @@ public class NavAgent : MonoBehaviour {
                 {
                     agent.SetDestination(hit.point);
                 }
+            }
+
+            if (agent.remainingDistance > agent.stoppingDistance)
+            {
+                aICharacterMove.Move(agent.desiredVelocity);
+            }
+            else
+            {
+                aICharacterMove.Move(Vector3.zero);
             }
         }
     }
