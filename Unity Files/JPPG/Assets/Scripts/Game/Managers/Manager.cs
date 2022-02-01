@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Manager : MonoBehaviour
 {
     public static Manager instance;
+    public NavMeshAgent agent;
+
+    private GameObject target;
 
     bool buildMode;
 
@@ -21,6 +25,7 @@ public class Manager : MonoBehaviour
     void Start()
     {
         buildMode = false;
+        
     }
 
     void Update()
