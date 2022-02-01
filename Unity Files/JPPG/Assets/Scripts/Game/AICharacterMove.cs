@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AICharacterMove : MonoBehaviour
 {
-    // Script is based on a script from the Youtuber "Brackeys" https://www.youtube.com/watch?v=FkLJ45Pt-mY
+
+    public Camera cam;
+    public NavMeshAgent agent;
 
     Animator animator;
     Rigidbody rigidBody;
     CapsuleCollider capsule;
+
+    // temp
+    public GameObject posToGet;
 
     float capsuleHeight;
     Vector3 capsuleCenter;
@@ -27,7 +33,35 @@ public class AICharacterMove : MonoBehaviour
 
     void Update()
     {
-        
+        if (!Manager.instance.getBuildMode())
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    agent.SetDestination(hit.point);
+                }
+            }
+
+            if (agent.remainingDistance > agent.stoppingDistance)
+            {
+                Move(agent.desiredVelocity);
+                animator.SetBool("isWalkingForward", true);
+            }
+            else
+            {
+                Move(Vector3.zero);
+                animator.SetBool("isWalkingForward", false);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            setTarget();
+        }
     }
 
     public void Move(Vector3 move)
@@ -39,6 +73,10 @@ public class AICharacterMove : MonoBehaviour
 
         transform.InverseTransformDirection(move);
 
-        animator.SetBool("isWalkingForward", true);
+    }
+
+    public void setTarget()
+    {
+        agent.SetDestination(posToGet.transform.position);
     }
 }
