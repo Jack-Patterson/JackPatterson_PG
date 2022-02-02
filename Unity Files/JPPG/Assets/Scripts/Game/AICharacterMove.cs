@@ -7,7 +7,7 @@ public class AICharacterMove : MonoBehaviour
 {
 
     public Camera cam;
-    public NavMeshAgent agent;
+    NavMeshAgent agent;
 
     Animator animator;
     Rigidbody rigidBody;
@@ -21,6 +21,7 @@ public class AICharacterMove : MonoBehaviour
 
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         rigidBody = GetComponentInChildren<Rigidbody>();
         capsule = GetComponentInChildren<CapsuleCollider>();
@@ -60,7 +61,7 @@ public class AICharacterMove : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            setTarget();
+            setTarget(posToGet.transform.position);
         }
     }
 
@@ -75,8 +76,21 @@ public class AICharacterMove : MonoBehaviour
 
     }
 
-    public void setTarget()
+    public void setTarget(Vector3 position)
     {
-        agent.SetDestination(posToGet.transform.position);
+        agent.SetDestination(position);
+        Move(agent.desiredVelocity);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MineTarget"))
+        {
+            Debug.Log("Colliding with object");
+            
+            setTarget(transform.position);
+            
+        }
+    }
+
 }

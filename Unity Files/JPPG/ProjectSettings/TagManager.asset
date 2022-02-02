@@ -8,6 +8,7 @@ TagManager:
   - PlacedGroundTile
   - PlacedObject
   - Interior Ground
+  - MineTarget
   layers:
   - Default
   - TransparentFX

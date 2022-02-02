@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class Manager : MonoBehaviour
 {
     public static Manager instance;
+    public MeshCollider meshCollider;
+    public CapsuleCollider capsuleCollider;
     public NavMeshAgent agent;
 
     private GameObject target;
@@ -25,7 +27,6 @@ public class Manager : MonoBehaviour
     void Start()
     {
         buildMode = false;
-        
     }
 
     void Update()
@@ -52,4 +53,5 @@ public class Manager : MonoBehaviour
     {
         return buildMode;
     }
+
 }
