@@ -19,6 +19,14 @@ public class AICharacterMove : MonoBehaviour
     float capsuleHeight;
     Vector3 capsuleCenter;
 
+    // Mining Related
+    bool isMining;
+    GameObject pickaxe;
+
+    // Weapons Related
+    GameObject sword;
+    GameObject shield;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -30,6 +38,15 @@ public class AICharacterMove : MonoBehaviour
         capsuleCenter = capsule.center;
 
         rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
+        pickaxe = GameObject.Find("Pickaxe");
+        pickaxe.SetActive(false);
+        isMining = false;
+
+        sword = GameObject.Find("Sword");
+        sword.SetActive(false);
+        shield = GameObject.Find("Shield");
+        shield.SetActive(false);
     }
 
     void Update()
@@ -79,17 +96,41 @@ public class AICharacterMove : MonoBehaviour
     public void setTarget(Vector3 position)
     {
         agent.SetDestination(position);
-        Move(agent.desiredVelocity);
+        //Move(agent.desiredVelocity);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("MineTarget"))
         {
-            Debug.Log("Colliding with object");
-            
+            setTarget(Vector3.zero);
+            toggleMining();
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MineTarget"))
+        {
             setTarget(transform.position);
-            
+            transform.LookAt(posToGet.transform);
+        }
+    }
+
+    private void toggleMining()
+    {
+        
+        if (!isMining)
+        {
+            isMining = true;
+            animator.SetBool("isMining", true);
+            pickaxe.SetActive(true);
+        }
+        else if (isMining)
+        {
+            isMining = false;
+            animator.SetBool("isMining", true);
+            pickaxe.SetActive(false);
         }
     }
 
