@@ -5,12 +5,13 @@ using UnityEngine.AI;
 
 public class HarvestableObject : MonoBehaviour
 {
-    Vector3 pos;
-    
+    private int maxStone;
+    private int currentStone;
 
     void Start()
     {
-        
+        maxStone = 5;
+        currentStone = maxStone;
     }
 
     void Update()
@@ -18,8 +19,12 @@ public class HarvestableObject : MonoBehaviour
         
     }
 
-    public Vector3 getPosition()
+    public void mineStone()
     {
-        return transform.position;
+        if (currentStone > 0)
+        {
+            currentStone--;
+            Debug.Log("Stone Mined " + currentStone);
+        }
     }
 }
