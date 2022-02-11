@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class AICharacterMove : MonoBehaviour
 {
+    // Setting Character State
+    int characterState;
 
     // Getting Elements from this gameobject or others
     public Camera cam;
@@ -17,6 +19,7 @@ public class AICharacterMove : MonoBehaviour
     // temp
     public GameObject objToGet;
     public GameObject objToGet2;
+    private GameObject currentTarget;
 
     GameObject standPos;
 
@@ -38,6 +41,8 @@ public class AICharacterMove : MonoBehaviour
 
     void Start()
     {
+        characterState = 0;
+        
         // Getting Objects and setting certain constraints
         h = objToGet.GetComponent<HarvestableObject>();
 
@@ -49,104 +54,133 @@ public class AICharacterMove : MonoBehaviour
         capsuleHeight = capsule.height;
         capsuleCenter = capsule.center;
 
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        agent.stoppingDistance = 1;
 
-        pickaxe = GameObject.Find("Pickaxe");
-        pickaxe.SetActive(false);
+        setObjectState();
         isMining = false;
 
-        sword = GameObject.Find("Sword");
-        sword.SetActive(false);
-        shield = GameObject.Find("Shield");
-        shield.SetActive(false);
-
+        currentTarget = null;
         standPos = GetChildWithName(objToGet2, "StandPosition");
     }
 
     void Update()
     {
-        // if the mode is not setting to is currently building check the following
-        if (!Manager.instance.getBuildMode())
+        CharacterStates();
+
+        /*if (characterState != 2)
         {
-            // test raycast for moving
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+            shield.SetActive(false);
+            sword.SetActive(false);
+            animator.SetBool("isMining", false);
+        }*/
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    agent.SetDestination(hit.point);
-                }
-            }
-
-            // Normalises movement and controls animations
-            if (agent.remainingDistance > agent.stoppingDistance)
-            {
-                Move(agent.desiredVelocity);
-                animator.SetBool("isWalkingForward", true);
-            }
-            else
-            {
-                Move(Vector3.zero);
-                animator.SetBool("isWalkingForward", false);
-            }
+        // Will only check these if the game is not in "Build Mode"
+        // if the mode is not setting to is currently building check the following
+        if (Manager.instance.getBuildMode())
+        {
+            return;
         }
+            
+        // test raycast for moving
+        /*if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                agent.SetDestination(hit.point);
+            }
+        }*/
 
         // Temp allows char to move to the rock
         if (Input.GetKeyDown(KeyCode.B))
         {
             setTarget(objToGet.transform.position);
+            currentTarget = objToGet;
         }
         // temp allows char to move to training dummy
         else if (Input.GetKeyDown(KeyCode.V))
         {
             setTarget(standPos.transform.position);
+            currentTarget = standPos;
         }
 
-        // attempt to fix character not stopping move animation once reaching the dummy
-        if (Vector3.Distance(transform.position, standPos.transform.position) <= 5)
+        if (currentTarget != null)
         {
-            
-            if (!arrived)
+            // attempt to fix character not stopping move animation once reaching the dummy
+            if (Vector3.Distance(transform.position, currentTarget.transform.position) <= 1)
             {
-                Debug.Log("Arrived");
-                arrived = true;
-                
-                
-                
-            }
-            if (agent.remainingDistance < agent.stoppingDistance)
-            {
-                setTarget(transform.position);
-                
-            }
+                if (agent.remainingDistance < agent.stoppingDistance)
+                {
+                    setTarget(transform.position);
 
-        }
-
-        // Allows char to mine
-        if (Vector3.Distance(transform.position, objToGet.transform.position) > 5 && isMining == true)
-        {
-            toggleMining();
+                }
+                if (!arrived)
+                {
+                    arrived = true;
+                    transform.LookAt(objToGet2.transform);
+                    characterState = 2;
+                }
+            }
         }
     }
 
-    // Normalises movement
-    public void Move(Vector3 move)
+    public void CharacterStates()
     {
-       if (move.magnitude > 1)
-       {
-            move.Normalize();
-       }
+        // 0 = Idle
+        // 1 = Walking
+        // 2 = Attacking (Melee) / Mining
+        // 3 = Attacking (Ranged)
 
-        transform.InverseTransformDirection(move);
+        switch (characterState)
+        {
+            case 0:
+                break;
+            case 1:
+                if (animator.GetBool("isWalkingForward"))
+                {
+                    if (agent.remainingDistance > agent.stoppingDistance)
+                    {
+                        animator.SetBool("isWalkingForward", true);
+                    }
+                    else
+                    {
+                        animator.SetBool("isWalkingForward", false);
+                        animator.StopPlayback();
+                        characterState = 0;
+                    }
+                }
+                break;
+            case 2:
+                /*if (animator.GetBool("isMining"))
+                {
+                    toggleMining();
+                }*/
+                sword.SetActive(true);
+                shield.SetActive(true);
+                animator.SetBool("isMining", true);
+                break;
+            case 3:
+                break;
+            default:
+                Debug.LogError("Invalid character state. Setting it to idle.");
+                characterState = 0;
+                break;
+        }
+    }
 
+    public int getCharacterState()
+    {
+        return characterState;
     }
 
     // Sets the agent target
     public void setTarget(Vector3 position)
     {
+        animator.SetBool("isWalkingForward", true);
         agent.SetDestination(position);
+        characterState = 1;
     }
 
     // Checks for a collision enter and if the tag is correct begin mining object, somewhat incomplete yet
@@ -155,9 +189,10 @@ public class AICharacterMove : MonoBehaviour
         if (collision.gameObject.CompareTag("MineTarget"))
         {
             setTarget(Vector3.zero);
-            toggleMining();
+            characterState = 2;
             
-            InvokeRepeating("testMineStone", 0, 4);
+            
+            //InvokeRepeating("testMineStone", 0, 4);
         }
     }
 
@@ -174,7 +209,6 @@ public class AICharacterMove : MonoBehaviour
     // Plays mining animation and gets char to hold pickaxe
     private void toggleMining()
     {
-        
         if (!isMining)
         {
             isMining = true;
@@ -209,4 +243,17 @@ public class AICharacterMove : MonoBehaviour
             return null;
         }
     }
+
+    private void setObjectState()
+    {
+        pickaxe = GameObject.Find("Pickaxe");
+        pickaxe.SetActive(false);
+
+        sword = GameObject.Find("Sword");
+        sword.SetActive(false);
+
+        shield = GameObject.Find("Shield");
+        shield.SetActive(false);
+    }
+
 }

@@ -9,6 +9,7 @@ TagManager:
   - PlacedObject
   - Interior Ground
   - MineTarget
+  - AttackTarget
   layers:
   - Default
   - TransparentFX
