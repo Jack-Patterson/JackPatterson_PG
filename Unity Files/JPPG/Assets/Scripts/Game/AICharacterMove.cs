@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,29 @@ using UnityEngine.AI;
 public class AICharacterMove : MonoBehaviour
 {
     // Setting Character State
-    int characterState;
+
+    float bucket_contents, max_bucket_contents = 10;
+
+    HarvestableObject.Resources am_currently_collecting;
+    HarvestableObject currentlyHarvesting;
+    public enum CharacterState { walking_to, idle, mining, practice, reading};
+    CharacterState isCurrently = CharacterState.idle;
 
     // Getting Elements from this gameobject or others
     public Camera cam;
     NavMeshAgent agent;
+
+    internal void give(float amount)
+    {
+        bucket_contents += amount;
+ 
+        if (bucket_contents > max_bucket_contents)
+        {
+
+        }
+
+
+    }
 
     Animator animator;
     Rigidbody rigidBody;
@@ -35,13 +54,18 @@ public class AICharacterMove : MonoBehaviour
     GameObject sword;
     GameObject shield;
 
+    internal void Iam(HarvestableObject harvestableObject)
+    {
+        currentlyHarvesting = harvestableObject;
+        am_currently_collecting = currentlyHarvesting.this_has;
+    }
+
     // Also temp, for testing purposes
     HarvestableObject h;
     bool arrived = false;
 
     void Start()
     {
-        characterState = 0;
         
         // Getting Objects and setting certain constraints
         h = objToGet.GetComponent<HarvestableObject>();
@@ -54,7 +78,7 @@ public class AICharacterMove : MonoBehaviour
         capsuleHeight = capsule.height;
         capsuleCenter = capsule.center;
 
-        agent.stoppingDistance = 1;
+        agent.stoppingDistance = 12;
 
         setObjectState();
         isMining = false;
@@ -65,8 +89,75 @@ public class AICharacterMove : MonoBehaviour
 
     void Update()
     {
-        CharacterStates();
+        switch (isCurrently)
+        {
+            case CharacterState.idle:
+                if (Input.GetKeyDown(KeyCode.B))
+                {
+                    setTarget(objToGet.transform.position);
+                    currentTarget = objToGet;
+                    isCurrently = CharacterState.walking_to;
+                }
+                else if (Input.GetKeyDown(KeyCode.V))
+                {
+                    setTarget(standPos.transform.position);
+                    currentTarget = standPos;
+                    isCurrently = CharacterState.walking_to;
+                }
 
+
+                break;
+            case CharacterState.walking_to:
+                if (agent.remainingDistance < agent.stoppingDistance)
+                    {
+                    Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
+
+                    foreach (Collider c in cols)
+                    {
+                       IInteractable interactable_object =  c.GetComponent<IInteractable>();
+
+                      if (interactable_object != null)
+                        {
+                           isCurrently = interactable_object.interact(this);
+
+                            
+                           transform.LookAt(c.transform);
+                        }
+                    }
+
+                      
+
+                    }
+
+
+
+                break;
+
+
+            case CharacterState.mining:
+
+                animator.SetBool("isMining", true);
+                pickaxe.SetActive(true);
+             
+
+                break;
+
+
+
+            
+
+
+
+
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         /*if (characterState != 2)
         {
             shield.SetActive(false);
@@ -94,85 +185,13 @@ public class AICharacterMove : MonoBehaviour
         }*/
 
         // Temp allows char to move to the rock
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            setTarget(objToGet.transform.position);
-            currentTarget = objToGet;
-        }
-        // temp allows char to move to training dummy
-        else if (Input.GetKeyDown(KeyCode.V))
-        {
-            setTarget(standPos.transform.position);
-            currentTarget = standPos;
-        }
+        
 
         if (currentTarget != null)
         {
             // attempt to fix character not stopping move animation once reaching the dummy
-            if (Vector3.Distance(transform.position, currentTarget.transform.position) <= 1)
-            {
-                if (agent.remainingDistance < agent.stoppingDistance)
-                {
-                    setTarget(transform.position);
-
-                }
-                if (!arrived)
-                {
-                    arrived = true;
-                    transform.LookAt(objToGet2.transform);
-                    characterState = 2;
-                }
-            }
+            
         }
-    }
-
-    public void CharacterStates()
-    {
-        // 0 = Idle
-        // 1 = Walking
-        // 2 = Attacking (Melee) / Mining
-        // 3 = Attacking (Ranged)
-
-        switch (characterState)
-        {
-            case 0:
-                break;
-            case 1:
-                if (animator.GetBool("isWalkingForward"))
-                {
-                    if (agent.remainingDistance > agent.stoppingDistance)
-                    {
-                        animator.SetBool("isWalkingForward", true);
-                    }
-                    else
-                    {
-                        animator.SetBool("isWalkingForward", false);
-                        animator.StopPlayback();
-                        characterState = 0;
-                    }
-                }
-                break;
-            case 2:
-                /*if (animator.GetBool("isMining"))
-                {
-                    toggleMining();
-                }*/
-                sword.SetActive(true);
-                shield.SetActive(true);
-                animator.SetBool("isMining", true);
-                break;
-            case 3:
-                break;
-            default:
-                Debug.LogError("Invalid character state. Setting it to idle.");
-                characterState = 0;
-                break;
-        }
-    }
-
-    public int getCharacterState()
-    {
-        return characterState;
     }
 
     // Sets the agent target
@@ -180,31 +199,9 @@ public class AICharacterMove : MonoBehaviour
     {
         animator.SetBool("isWalkingForward", true);
         agent.SetDestination(position);
-        characterState = 1;
     }
 
-    // Checks for a collision enter and if the tag is correct begin mining object, somewhat incomplete yet
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("MineTarget"))
-        {
-            setTarget(Vector3.zero);
-            characterState = 2;
-            
-            
-            //InvokeRepeating("testMineStone", 0, 4);
-        }
-    }
 
-    // Attempt to fix movement issues in regards to not stopping moving into or away from rock once they reach it
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("MineTarget"))
-        {
-            setTarget(transform.position);
-            transform.LookAt(objToGet.transform);
-        }
-    }
 
     // Plays mining animation and gets char to hold pickaxe
     private void toggleMining()
@@ -226,7 +223,7 @@ public class AICharacterMove : MonoBehaviour
     // Used for the repeating as does not work if calling a method from another script directly
     void testMineStone()
     {
-        h.mineStone();
+     
     }
 
     // Gets the child of an object other than the one this script is attached to, in this case looking for the training dummy
@@ -246,6 +243,7 @@ public class AICharacterMove : MonoBehaviour
 
     private void setObjectState()
     {
+        
         pickaxe = GameObject.Find("Pickaxe");
         pickaxe.SetActive(false);
 

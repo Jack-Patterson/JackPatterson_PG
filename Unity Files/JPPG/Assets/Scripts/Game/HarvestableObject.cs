@@ -3,28 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HarvestableObject : MonoBehaviour
+public class HarvestableObject : MonoBehaviour, IInteractable
 {
-    private int maxStone;
-    private int currentStone;
-
+    public enum Resources { Rock, Gold, Wood, Food, Melee_Skill}
+    AICharacterMove myNPC;
+    public Resources this_has;
+    float amount_of_resource = 1000;
+    float rate_of_collection = 2;
     void Start()
     {
-        maxStone = 5;
-        currentStone = maxStone;
+
     }
 
     void Update()
     {
-        
+        myNPC.give(rate_of_collection * Time.deltaTime/*, this_has*/);
     }
 
-    public void mineStone()
+    AICharacterMove.CharacterState AnimationFor
     {
-        if (currentStone > 0)
+        get
         {
-            currentStone--;
-            Debug.Log("Stone Mined " + currentStone);
+            switch(this_has)
+            {
+
+                case Resources.Food:
+
+                    return AICharacterMove.CharacterState.mining;
+
+
+
+                case Resources.Rock:
+
+                    return AICharacterMove.CharacterState.mining;
+
+
+
+                case Resources.Melee_Skill:
+
+                    return AICharacterMove.CharacterState.practice;
+
+
+                default:
+
+                    return AICharacterMove.CharacterState.mining;
+
+
+
+            }
         }
+
+      
+    }
+
+    public AICharacterMove.CharacterState interact(AICharacterMove NPC)
+    {
+        myNPC = NPC;
+        myNPC.Iam(this);
+        return AnimationFor; ;
     }
 }
