@@ -63,6 +63,7 @@ public class CharacterControl : MonoBehaviour
 
         agent.stoppingDistance = 12;
 
+        findObject();
         setObjectStateOff();
 
         currentTarget = null;
@@ -293,23 +294,18 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
+    private void findObject()
+    {
+        pickaxe = GameObject.Find("Pickaxe");
+        sword = GameObject.Find("Sword");
+        shield = GameObject.Find("Shield");
+    }
+
     private void setObjectStateOff()
     {
-        try
-        {
-            pickaxe = GameObject.Find("Pickaxe");
-            pickaxe.SetActive(false);
-
-            sword = GameObject.Find("Sword");
-            sword.SetActive(false);
-
-            shield = GameObject.Find("Shield");
-            shield.SetActive(false);
-        }
-        catch (NullReferenceException nre)
-        {
-            
-        }
+        pickaxe.SetActive(false);
+        sword.SetActive(false);
+        shield.SetActive(false);
     }
 
 }
