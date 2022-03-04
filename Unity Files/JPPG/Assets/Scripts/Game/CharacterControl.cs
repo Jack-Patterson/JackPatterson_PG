@@ -30,10 +30,10 @@ public class CharacterControl : MonoBehaviour
     Rigidbody rigidBody;
     CapsuleCollider capsule;
 
-    // temp
+    /*// temp
     public GameObject objToGet;
     public GameObject objToGet2;
-    public GameObject objToGet3;
+    public GameObject objToGet3;*/
     private GameObject currentTarget;
 
     GameObject standPos;
@@ -67,7 +67,7 @@ public class CharacterControl : MonoBehaviour
         setObjectStateOff();
 
         currentTarget = null;
-        standPos = GetChildWithName(objToGet2, "StandPosition");
+        //standPos = GetChildWithName(objToGet2, "StandPosition");
     }
 
     void Update()
@@ -102,7 +102,7 @@ public class CharacterControl : MonoBehaviour
             case CharacterState.idle:
                 CheckLastState();
 
-                if (Input.GetKeyDown(KeyCode.B))
+                /*if (Input.GetKeyDown(KeyCode.B))
                 {
                     setTarget(objToGet.transform.position);
                     currentTarget = objToGet;
@@ -119,7 +119,7 @@ public class CharacterControl : MonoBehaviour
                     setTarget(objToGet3.transform.position);
                     currentTarget = standPos;
                     currentState = CharacterState.walkingTo;
-                }
+                }*/
                 break;
 
             case CharacterState.walkingTo:
