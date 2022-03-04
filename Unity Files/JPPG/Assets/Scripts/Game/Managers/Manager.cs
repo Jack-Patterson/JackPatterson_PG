@@ -6,11 +6,6 @@ using UnityEngine.AI;
 public class Manager : MonoBehaviour
 {
     public static Manager instance;
-    public MeshCollider meshCollider;
-    public CapsuleCollider capsuleCollider;
-    public NavMeshAgent agent;
-
-    private GameObject target;
 
     bool buildMode;
 
@@ -18,7 +13,7 @@ public class Manager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("More than one instance of BuildManager");
+            Debug.LogError("More than one instance of Manager");
             return;
         }
         instance = this;

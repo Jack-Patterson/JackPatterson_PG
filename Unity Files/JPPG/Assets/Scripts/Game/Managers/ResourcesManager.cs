@@ -7,11 +7,11 @@ public class ResourcesManager : MonoBehaviour
     public static ResourcesManager instance;
     public enum Resources {Stone, Gold, Wood, Food, MeleeSkill}
 
-    internal Item stone = new Item("Stone", 0, 20, Resources.Stone);
-    internal Item gold = new Item("Gold", 0, 1, Resources.Gold);
-    internal Item wood = new Item("Wood", 0, 20, Resources.Wood);
-    internal Item food = new Item("Food", 0, 20, Resources.Food);
-    internal Item meleeSkill = new Item("Melee Skill", 0, 20, Resources.MeleeSkill);
+    internal Item stone;
+    internal Item gold;
+    internal Item wood;
+    internal Item food;
+    internal Item meleeSkill;
 
     private void Awake()
     {
@@ -25,7 +25,11 @@ public class ResourcesManager : MonoBehaviour
 
     void Start()
     {
-        
+        stone = new Item("Stone", 0, 20, Resources.Stone);
+        gold = new Item("Gold", 0, 1, Resources.Gold);
+        wood = new Item("Wood", 0, 20, Resources.Wood);
+        food = new Item("Food", 0, 20, Resources.Food);
+        meleeSkill = new Item("Melee Skill", 0, 20, Resources.MeleeSkill);
     }
 
     void Update()
