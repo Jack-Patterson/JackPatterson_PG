@@ -6,34 +6,36 @@ public class CameraControl : MonoBehaviour
 {
     public static CameraControl instance;
     
-    public Transform followTrans;
-    public Transform cameraTrans;
+    internal Transform focusTrans;
+    private Transform cameraTrans;
     
-    public float normalSpeed;
-    public float fastSpeed;
-    public float movementSpeed;
-    public float movementTime;
-    public float rotAmount;
-    public Vector3 zoomAmount;
+    private float normalSpeed = .5f;
+    private float fastSpeed = 3f;
+    private float movementSpeed = 1f;
+    private float movementTime = 5f;
+    private float rotAmount = 1f;
+    private Vector3 zoomAmount = new Vector3(0,-5,5);
 
-    public Vector2 panLimit = new Vector2(40f, 35f);
-    public float maxY = 30f;
-    public float minY = 5f;
+    private Vector2 panLimit = new Vector2(40f, 35f);
+    private float maxY = 30f;
+    private float minY = 5f;
 
-    public Vector3 newPos;
-    public Quaternion newRot;
-    public Vector3 newZoom;
+    private Vector3 newPos;
+    private Quaternion newRot;
+    private Vector3 newZoom;
 
-    public Vector3 dragStartPos;
-    public Vector3 dragCurrentPos;
-    public Vector3 rotStartPos;
-    public Vector3 rotCurrentPos;
+    private Vector3 dragStartPos;
+    private Vector3 dragCurrentPos;
+    private Vector3 rotStartPos;
+    private Vector3 rotCurrentPos;
 
 
     void Start()
     {
         instance = this;
-        
+
+        cameraTrans = GameObject.Find("Main Camera").transform;
+
         newPos = transform.position;
         newRot = transform.rotation;
         newZoom = cameraTrans.localPosition;
@@ -41,9 +43,10 @@ public class CameraControl : MonoBehaviour
 
     void Update()
     {
-        if (followTrans != null)
+        if (focusTrans != null)
         {
-            transform.position = followTrans.position;
+            transform.position = focusTrans.position;
+            HandleFocusTransInput();
         }
         else
         {
@@ -53,8 +56,28 @@ public class CameraControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            followTrans = null;
+            focusTrans = null;
         }
+    }
+
+    void HandleFocusTransInput()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            rotStartPos = Input.mousePosition;
+        }
+        if (Input.GetMouseButton(2))
+        {
+            rotCurrentPos = Input.mousePosition;
+
+            Vector3 difference = rotStartPos - rotCurrentPos;
+
+            rotStartPos = rotCurrentPos;
+
+            newRot *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * movementTime);
     }
 
     void HandleMouseInput()
@@ -159,13 +182,10 @@ public class CameraControl : MonoBehaviour
         newPos.z = Mathf.Clamp(newPos.z, -panLimit.y, panLimit.y);
         transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * movementTime);
 
-        
-
         transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * movementTime);
 
         newZoom.x = Mathf.Clamp(newZoom.x, -panLimit.x, panLimit.x);
         newZoom.z = Mathf.Clamp(newZoom.z, -panLimit.y, panLimit.y);
-
         newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
         cameraTrans.localPosition = Vector3.Lerp(cameraTrans.localPosition, newZoom, Time.deltaTime * movementTime);
 

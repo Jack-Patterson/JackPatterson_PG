@@ -7,7 +7,8 @@ public class Manager : MonoBehaviour
 {
     public static Manager instance;
 
-    bool buildMode;
+    bool buildModeNormal;
+    bool buildModeWall;
 
     private void Awake()
     {
@@ -21,32 +22,57 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
-        buildMode = false;
+        buildModeNormal = false;
+        buildModeWall = false;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (getBuildMode())
+            buildModeWall = false;
+            if (getBuildModeNormal())
             {
-                setBuildMode(false);
+                setBuildModeNormal(false);
             }
-            else if (!getBuildMode())
+            else if (!getBuildModeNormal())
             {
-                setBuildMode(true);
+                setBuildModeNormal(true);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            buildModeNormal = false;
+            if (getBuildModeWall())
+            {
+                setBuildModeWall(false);
+            }
+            else if (!getBuildModeWall())
+            {
+                setBuildModeWall(true);
             }
         }
     }
 
-    public void setBuildMode(bool buildMode)
+    public void setBuildModeNormal(bool buildMode)
     {
-        this.buildMode = buildMode;
+        this.buildModeNormal = buildMode;
     }
 
-    public bool getBuildMode()
+    public bool getBuildModeNormal()
     {
-        return buildMode;
+        return buildModeNormal;
+    }
+
+    public void setBuildModeWall(bool buildMode)
+    {
+        this.buildModeWall = buildMode;
+    }
+
+    public bool getBuildModeWall()
+    {
+        return buildModeWall;
     }
 
 }

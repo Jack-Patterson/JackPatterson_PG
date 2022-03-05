@@ -20,7 +20,7 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!Manager.instance.getBuildMode())
+        if (!Manager.instance.getBuildModeNormal())
         {
             return;
         }
@@ -56,7 +56,7 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!Manager.instance.getBuildMode())
+        if (!Manager.instance.getBuildModeNormal())
         {
             return;
         }
@@ -68,7 +68,7 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!Manager.instance.getBuildMode())
+        if (!Manager.instance.getBuildModeNormal())
         {
             return;
         }
@@ -83,14 +83,14 @@ public class PlaceableObject : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !Manager.instance.getBuildMode())
+        if (Input.GetKeyDown(KeyCode.P) && !Manager.instance.getBuildModeNormal())
         {
-            Manager.instance.setBuildMode(true);
+            Manager.instance.setBuildModeNormal(true);
             return;
         }
-        else if (Input.GetKeyDown(KeyCode.P) && Manager.instance.getBuildMode())
+        else if (Input.GetKeyDown(KeyCode.P) && Manager.instance.getBuildModeNormal())
         {
-            Manager.instance.setBuildMode(false);
+            Manager.instance.setBuildModeNormal(false);
             rend.material.color = startColour;
             return;
         }

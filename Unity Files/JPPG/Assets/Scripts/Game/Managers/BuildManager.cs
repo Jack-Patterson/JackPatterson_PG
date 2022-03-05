@@ -5,8 +5,9 @@ using UnityEngine;
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
-    private Vector3 potOffset;
     
+    private Vector3 potOffset;
+
     [Header("Test1")]
     public GameObject groundBuildPrefab;
 
