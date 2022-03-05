@@ -8,7 +8,7 @@ public class CreateWall : MonoBehaviour
     
     public GameObject wallPolePrefab;
     public GameObject wallPrefab;
-    GameObject lastPos;
+    GameObject lastWallPos;
 
     public GameObject mousePointer;
     public Camera cam;
@@ -64,26 +64,9 @@ public class CreateWall : MonoBehaviour
     public Vector3 snapPos(Vector3 original)
     {
         Vector3 snapped;
-        snapped.x = Mathf.Floor(original.x + 0.5f);
-        snapped.y = Mathf.Floor(original.y + 0.5f);
-        snapped.z = Mathf.Floor(original.z + 0.5f);
-
-        /*float y = 0;
-
-        if (rot.y > 55  rot.y < 65)
-            y = 60;
-        if (rot.y > 115  rot.y < 125)
-            y = 120;
-        if (rot.y > 175  rot.y < 185)
-            y = 180;
-        if (rot.y > 235  rot.y < 245)
-            y = 240;
-        if (rot.y > 295  rot.y < 305)
-            y = 300;
-        if (rot.y > 355  rot.y < 5)
-            y = 0;*/
-
-
+        snapped.x = Mathf.Floor(original.x + 0.45f);
+        snapped.y = Mathf.Floor(original.y + 0.45f);
+        snapped.z = Mathf.Floor(original.z + 0.45f);
 
         return snapped;
 
@@ -98,7 +81,7 @@ public class CreateWall : MonoBehaviour
         
         GameObject startWallPos = Instantiate(wallPolePrefab, startPos, Quaternion.identity);
         startWallPos.transform.position = new Vector3(startPos.x, startPos.y + 1.1f, startPos.z);
-        lastPos = startWallPos;
+        lastWallPos = startWallPos;
     }
 
     void setWall()
@@ -111,7 +94,13 @@ public class CreateWall : MonoBehaviour
         Vector3 current = getWorldPoint();
         current = snapPos(current);
         current = new Vector3(current.x, current.y + 1.1f, current.z);
-        if (!current.Equals(lastPos.transform.position))
+
+        if (!checkValidPos(current))
+        {
+            return;
+        }
+
+        if (!current.Equals(lastWallPos.transform.position))
         {
             createWallSegment(current);
         }
@@ -120,9 +109,25 @@ public class CreateWall : MonoBehaviour
     void createWallSegment(Vector3 current)
     {
         GameObject newPos = Instantiate(wallPolePrefab, current, Quaternion.identity);
-        Vector3 middle = Vector3.Lerp(newPos.transform.position, lastPos.transform.position, 0.5f);
+        Vector3 middle = Vector3.Lerp(newPos.transform.position, lastWallPos.transform.position, 0.5f);
         GameObject newWall = Instantiate(wallPrefab, middle, Quaternion.identity);
-        newWall.transform.LookAt(lastPos.transform);
-        lastPos = newPos;
+        newWall.transform.LookAt(lastWallPos.transform);
+        lastWallPos = newPos;
+    }
+
+    private bool checkValidPos(Vector3 checkPos)
+    {
+        float root = Mathf.Sqrt(2);
+        
+        if (checkPos == lastWallPos.transform.position)
+        {
+            return false;
+        }
+        if (Vector3.Distance(lastWallPos.transform.position, checkPos) > root)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
