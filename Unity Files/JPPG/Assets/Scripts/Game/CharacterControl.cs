@@ -169,6 +169,12 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
+    // Allows Camera to focus and follow this character
+    public void OnMouseDown()
+    {
+        CameraControl.instance.followTrans = transform;
+    }
+
     // Sets the agent target
     public void setTarget(Vector3 position)
     {
