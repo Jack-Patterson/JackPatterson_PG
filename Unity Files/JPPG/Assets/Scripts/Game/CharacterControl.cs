@@ -22,6 +22,8 @@ public class CharacterControl : MonoBehaviour
     CharacterState currentState = CharacterState.idle;
     CharacterState lastState = CharacterState.idle;
 
+    public enum Job { None, Swordsman, Archer, Miner, Lumberjack }
+
     // Getting Elements from this gameobject or others
     public Camera cam;
     NavMeshAgent agent;
@@ -61,7 +63,7 @@ public class CharacterControl : MonoBehaviour
         capsuleHeight = capsule.height;
         capsuleCenter = capsule.center;
 
-        agent.stoppingDistance = 12;
+        agent.stoppingDistance = 4;
 
         findObject();
         setObjectStateOff();
@@ -102,13 +104,13 @@ public class CharacterControl : MonoBehaviour
             case CharacterState.idle:
                 CheckLastState();
 
-                /*if (Input.GetKeyDown(KeyCode.B))
+                if (Input.GetKeyDown(KeyCode.B))
                 {
-                    setTarget(objToGet.transform.position);
-                    currentTarget = objToGet;
+                    GameObject target = findNearestHarvestableObject();
+                    setTarget(target.transform.position);
                     currentState = CharacterState.walkingTo;
                 }
-                else if (Input.GetKeyDown(KeyCode.V))
+                /*else if (Input.GetKeyDown(KeyCode.V))
                 {
                     setTarget(standPos.transform.position);
                     currentTarget = standPos;
@@ -127,7 +129,7 @@ public class CharacterControl : MonoBehaviour
 
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
-                    Collider[] cols = Physics.OverlapSphere(agent.destination, 5);
+                    Collider[] cols = Physics.OverlapSphere(agent.destination, 2);
 
                     foreach (Collider c in cols)
                     {
@@ -312,6 +314,24 @@ public class CharacterControl : MonoBehaviour
         pickaxe.SetActive(false);
         sword.SetActive(false);
         shield.SetActive(false);
+    }
+
+    private GameObject findNearestHarvestableObject()
+    {
+        GameObject nearest = null; 
+        foreach(GameObject g in ResourcesManager.instance.getHarvestableObjectsList())
+        {
+            if (nearest == null)
+            {
+                nearest = g;
+            }
+            if (Vector3.Distance(transform.position, g.transform.position) < Vector3.Distance(transform.position, nearest.transform.position))
+            {
+                nearest = g;
+            }
+        }
+
+        return nearest;
     }
 
 }

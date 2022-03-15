@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &6679847796709871796
 Transform:
@@ -43,6 +43,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -106,6 +110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -167,6 +175,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
