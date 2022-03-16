@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &5609831421800696999
 Transform:
@@ -67,6 +67,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
@@ -130,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -191,6 +199,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
@@ -254,6 +266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -315,6 +331,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -378,6 +398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -439,6 +463,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
@@ -502,6 +530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 23
@@ -563,6 +595,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
@@ -626,6 +662,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -687,6 +727,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -750,6 +794,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -811,6 +859,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -874,6 +926,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -935,6 +991,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -998,6 +1058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1059,6 +1123,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -1122,6 +1190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1183,6 +1255,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -1246,6 +1322,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1307,6 +1387,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -1370,6 +1454,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1431,6 +1519,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -1494,6 +1586,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -1555,6 +1651,10 @@ PrefabInstance:
     - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Inset_01 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959238548516768, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4402554470865986, guid: 9e0ceb26e65ce344f9a4e9f94c347e64, type: 3}
       propertyPath: m_RootOrder
@@ -1618,6 +1718,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1679,6 +1783,10 @@ PrefabInstance:
     - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Fence_Wood_Round_Pole_01 (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386445058532524, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4236776186026278, guid: fd077f63412b45d41b2e723dc862ff50, type: 3}
       propertyPath: m_RootOrder
