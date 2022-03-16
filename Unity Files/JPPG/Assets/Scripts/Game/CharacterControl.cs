@@ -6,14 +6,14 @@ using UnityEngine.AI;
 
 public class CharacterControl : MonoBehaviour
 {
-    // Setting Character State
 
-    float characterInventory = 6;
+    float characterInventory = 8;
     float characterInventoryMax = 10;
 
     ResourcesManager.Resources resourceType/* = ResourcesManager.Resources.Stone*/;
     HarvestableObject harvest;
 
+    StorageItem storage;
     Inventory inventory;
 
     IInteractable interactableObject;
@@ -23,9 +23,10 @@ public class CharacterControl : MonoBehaviour
     CharacterState lastState = CharacterState.idle;
 
     public enum Job { None, Swordsman, Archer, Miner, Lumberjack }
+    [SerializeField]
+    Job job = Job.None;
 
     // Getting Elements from this gameobject or others
-    public Camera cam;
     NavMeshAgent agent;
 
     Animator animator;
@@ -76,11 +77,6 @@ public class CharacterControl : MonoBehaviour
     {
         CharacterStates();
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            characterInventory = (int)UnityEngine.Random.Range(0, 10);
-        }
-
         /*// Will only check these if the game is not in "Build Mode"
         // if the mode is not setting to is currently building check the following
         if (Manager.instance.getBuildMode())
@@ -110,18 +106,13 @@ public class CharacterControl : MonoBehaviour
                     setTarget(target.transform.position);
                     currentState = CharacterState.walkingTo;
                 }
-                /*else if (Input.GetKeyDown(KeyCode.V))
+
+                if (Input.GetKeyDown(KeyCode.C))
                 {
-                    setTarget(standPos.transform.position);
-                    currentTarget = standPos;
+                    GameObject target = findNearestStorageItemObject();
+                    setTarget(target.transform.position);
                     currentState = CharacterState.walkingTo;
                 }
-                else if (Input.GetKeyDown(KeyCode.C))
-                {
-                    setTarget(objToGet3.transform.position);
-                    currentTarget = standPos;
-                    currentState = CharacterState.walkingTo;
-                }*/
                 break;
 
             case CharacterState.walkingTo:
@@ -129,7 +120,7 @@ public class CharacterControl : MonoBehaviour
 
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
-                    Collider[] cols = Physics.OverlapSphere(agent.destination, 2);
+                    Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
 
                     foreach (Collider c in cols)
                     {
@@ -150,6 +141,11 @@ public class CharacterControl : MonoBehaviour
 
                 animator.SetBool("isMining", true);
                 pickaxe.SetActive(true);
+
+                if (characterInventory == characterInventoryMax)
+                {
+                    currentState = CharacterState.idle;
+                }
                 break;
 
             case CharacterState.practice:
@@ -163,9 +159,14 @@ public class CharacterControl : MonoBehaviour
 
             case CharacterState.storing:
                 CheckLastState();
-                
+
+                storage.giveItem(resourceType, characterInventory);
                 // temp anim as is unused and will show it working
                 animator.SetBool("isWalkingBackward", true);
+                if (characterInventory == 0)
+                {
+                    currentState = CharacterState.idle;
+                }
 
                 break;
         }
@@ -237,7 +238,7 @@ public class CharacterControl : MonoBehaviour
                 break;
 
             case CharacterState.storing:
-                //animator.SetBool("isStoring", false);
+                animator.SetBool("isWalkingBackward", false);
                 break;
 
             case CharacterState.reading:
@@ -257,6 +258,11 @@ public class CharacterControl : MonoBehaviour
     internal void IAmInventory(Inventory inventory)
     {
         this.inventory = inventory;
+    }
+
+    internal void IAmStorage(StorageItem storage)
+    {
+        this.storage = storage;
     }
 
     internal void give(float amount)
@@ -320,6 +326,23 @@ public class CharacterControl : MonoBehaviour
     {
         GameObject nearest = null; 
         foreach(GameObject g in ResourcesManager.instance.getHarvestableObjectsList())
+        {
+            if (nearest == null)
+            {
+                nearest = g;
+            }
+            if (Vector3.Distance(transform.position, g.transform.position) < Vector3.Distance(transform.position, nearest.transform.position))
+            {
+                nearest = g;
+            }
+        }
+        return nearest;
+    }
+
+    private GameObject findNearestStorageItemObject()
+    {
+        GameObject nearest = null;
+        foreach (GameObject g in ResourcesManager.instance.getStorageItemsList())
         {
             if (nearest == null)
             {

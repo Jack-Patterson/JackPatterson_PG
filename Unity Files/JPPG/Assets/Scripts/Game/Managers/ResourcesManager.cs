@@ -24,6 +24,7 @@ public class ResourcesManager : MonoBehaviour
     private Vector2 maxTownBounds = new Vector2(20f, 15f);
 
     private List<GameObject> harvestableObjects = new List<GameObject>();
+    private List<GameObject> storageItems = new List<GameObject>();
 
     private void Awake()
     {
@@ -76,7 +77,7 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
-    public float getTime(Resources resource)
+    public float getResourceTime(Resources resource)
     {
         switch (resource)
         {
@@ -86,6 +87,18 @@ public class ResourcesManager : MonoBehaviour
             case Resources.Wood: return 3f;
             case Resources.Gold: return 1f;
             default: return 3f;
+        }
+    }
+
+    public float getResourceObjectTime(Resources resource)
+    {
+        switch (resource)
+        {
+            case Resources.Food: return 240f; // 4 mins
+            case Resources.Stone: return 10f; // 10 Mins 600f
+            case Resources.MeleeSkill: return 120f; // 2 Mins
+            case Resources.Wood: return 360f; // 6 mins
+            default: return 300f; // 5 Mins
         }
     }
 
@@ -138,5 +151,15 @@ public class ResourcesManager : MonoBehaviour
     public List<GameObject> getHarvestableObjectsList()
     {
         return harvestableObjects;
+    }
+
+    internal void addToStorageItems(GameObject storageItem)
+    {
+        storageItems.Add(storageItem);
+    }
+
+    internal List<GameObject> getStorageItemsList()
+    {
+        return storageItems;
     }
 }

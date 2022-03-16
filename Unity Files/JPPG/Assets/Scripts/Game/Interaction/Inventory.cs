@@ -50,7 +50,7 @@ public class Inventory : MonoBehaviour, IInteractable
 
     internal void storeResource()
     {
-        StartCoroutine(depositResourceIE(ResourcesManager.instance.getTime(resource), resource));
+        StartCoroutine(depositResourceIE(ResourcesManager.instance.getResourceTime(resource), resource));
     }
 
     private IEnumerator depositResourceIE(float time, ResourcesManager.Resources resource)

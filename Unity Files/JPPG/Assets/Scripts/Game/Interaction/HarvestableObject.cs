@@ -8,17 +8,23 @@ public class HarvestableObject : MonoBehaviour, IInteractable
 {
     CharacterControl character;
     public ResourcesManager.Resources resource;
+    
     float maxResourceAmount;
     float resourceAmount;
     float collectRate = 1;
     float time;
 
+    GameObject thisGO;
+
     bool coroutineStarted = false;
     bool breakCoroutine = false;
 
+    Vector3 previousPos;
 
     void Start()
     {
+        thisGO = this.gameObject;
+
         maxResourceAmount = 10;
         resourceAmount = maxResourceAmount;
     }
@@ -34,6 +40,11 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         {
             coroutineStarted = true;
             collectResource();
+        }
+
+        if (resourceAmount <= 0)
+        {
+            noResources();
         }
     }
 
@@ -60,7 +71,7 @@ public class HarvestableObject : MonoBehaviour, IInteractable
 
     internal void collectResource()
     {
-        StartCoroutine(collectResourceIE(ResourcesManager.instance.getTime(resource)));
+        StartCoroutine(collectResourceIE(ResourcesManager.instance.getResourceTime(resource)));
     }
 
     private IEnumerator collectResourceIE(float time)
@@ -78,6 +89,20 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         coroutineStarted = false;
     }
 
+    private IEnumerator hideObjectIE(float time)
+    {
+        previousPos = transform.position;
+
+        transform.position = new Vector3(9999, -1000, 9999);
+        thisGO.SetActive(false);
+
+        yield return new WaitForSeconds(time);
+
+        thisGO.SetActive(true);
+        transform.position = previousPos;
+        resourceAmount = maxResourceAmount;
+    }
+
     public void BreakCoroutine()
     {
         breakCoroutine = true;
@@ -86,6 +111,11 @@ public class HarvestableObject : MonoBehaviour, IInteractable
     public ResourcesManager.Resources getResourceType()
     {
         return resource;
+    }
+
+    private void noResources()
+    {
+        StartCoroutine(hideObjectIE(ResourcesManager.instance.getResourceObjectTime(resource)));
     }
 
 }
