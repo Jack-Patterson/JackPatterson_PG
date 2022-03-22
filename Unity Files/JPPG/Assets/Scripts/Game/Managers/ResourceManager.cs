@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourcesManager : MonoBehaviour
+public class ResourceManager : MonoBehaviour
 {
-    public static ResourcesManager instance;
-    public enum Resources {Stone, Gold, Wood, Food, MeleeSkill}
+    public static ResourceManager instance;
+    public enum Resource {Stone, Gold, Wood, Food, MeleeSkill}
 
     internal Item stone;
     internal Item gold;
@@ -38,11 +38,11 @@ public class ResourcesManager : MonoBehaviour
 
     void Start()
     {
-        stone = new Item("Stone", 0, 40, Resources.Stone);
-        gold = new Item("Gold", 0, 1, Resources.Gold);
-        wood = new Item("Wood", 0, 20, Resources.Wood);
-        food = new Item("Food", 0, 20, Resources.Food);
-        meleeSkill = new Item("Melee Skill", 0, 20, Resources.MeleeSkill);
+        stone = new Item("Stone", 0, 40, Resource.Stone);
+        gold = new Item("Gold", 0, 1, Resource.Gold);
+        wood = new Item("Wood", 0, 20, Resource.Wood);
+        food = new Item("Food", 0, 20, Resource.Food);
+        meleeSkill = new Item("Melee Skill", 0, 20, Resource.MeleeSkill);
 
         heightFinder = GameObject.Find("objectHeightFinder");
 
@@ -64,40 +64,40 @@ public class ResourcesManager : MonoBehaviour
        
     }
 
-    public Item getResourceItem(Resources resource)
+    public Item getResourceItem(Resource resource)
     {
         switch (resource)
         {
-            case Resources.Stone: return stone;
-            case Resources.Wood: return wood;
-            case Resources.Gold: return gold;
-            case Resources.Food: return food;
-            case Resources.MeleeSkill: return meleeSkill;
+            case Resource.Stone: return stone;
+            case Resource.Wood: return wood;
+            case Resource.Gold: return gold;
+            case Resource.Food: return food;
+            case Resource.MeleeSkill: return meleeSkill;
             default: return null;
         }
     }
 
-    public float getResourceTime(Resources resource)
+    public float getResourceTime(Resource resource)
     {
         switch (resource)
         {
-            case Resources.Food: return 2f;
-            case Resources.Stone: return 5f;
-            case Resources.MeleeSkill: return 2f;
-            case Resources.Wood: return 3f;
-            case Resources.Gold: return 1f;
+            case Resource.Food: return 2f;
+            case Resource.Stone: return 5f;
+            case Resource.MeleeSkill: return 2f;
+            case Resource.Wood: return 3f;
+            case Resource.Gold: return 1f;
             default: return 3f;
         }
     }
 
-    public float getResourceObjectTime(Resources resource)
+    public float getResourceObjectTime(Resource resource)
     {
         switch (resource)
         {
-            case Resources.Food: return 240f; // 4 mins
-            case Resources.Stone: return 10f; // 10 Mins 600f
-            case Resources.MeleeSkill: return 120f; // 2 Mins
-            case Resources.Wood: return 360f; // 6 mins
+            case Resource.Food: return 240f; // 4 mins
+            case Resource.Stone: return 10f; // 10 Mins 600f
+            case Resource.MeleeSkill: return 120f; // 2 Mins
+            case Resource.Wood: return 360f; // 6 mins
             default: return 300f; // 5 Mins
         }
     }

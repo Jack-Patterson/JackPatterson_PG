@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour, IInteractable
 {
     CharacterControl character;
-    ResourcesManager.Resources resource;
+    ResourceManager.Resource resource;
     float storageRate = 1;
 
     bool breakCoroutine = false;
@@ -50,13 +50,13 @@ public class Inventory : MonoBehaviour, IInteractable
 
     internal void storeResource()
     {
-        StartCoroutine(depositResourceIE(ResourcesManager.instance.getResourceTime(resource), resource));
+        StartCoroutine(depositResourceIE(ResourceManager.instance.getResourceTime(resource), resource));
     }
 
-    private IEnumerator depositResourceIE(float time, ResourcesManager.Resources resource)
+    private IEnumerator depositResourceIE(float time, ResourceManager.Resource resource)
     {
         float inventoryAmount = character.getInventory();
-        Item item = ResourcesManager.instance.getResourceItem(resource);
+        Item item = ResourceManager.instance.getResourceItem(resource);
 
         if (inventoryAmount <= 0 || breakCoroutine)
         {

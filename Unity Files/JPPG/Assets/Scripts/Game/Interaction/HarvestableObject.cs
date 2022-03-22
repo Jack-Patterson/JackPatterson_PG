@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class HarvestableObject : MonoBehaviour, IInteractable
 {
     CharacterControl character;
-    public ResourcesManager.Resources resource;
+    public ResourceManager.Resource resource;
     
     float maxResourceAmount;
     float resourceAmount;
@@ -54,9 +54,9 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         {
             switch (resource)
             {
-                case ResourcesManager.Resources.Food: return CharacterControl.CharacterState.mining;
-                case ResourcesManager.Resources.Stone: return CharacterControl.CharacterState.mining;
-                case ResourcesManager.Resources.MeleeSkill: return CharacterControl.CharacterState.practice;
+                case ResourceManager.Resource.Food: return CharacterControl.CharacterState.mining;
+                case ResourceManager.Resource.Stone: return CharacterControl.CharacterState.mining;
+                case ResourceManager.Resource.MeleeSkill: return CharacterControl.CharacterState.practice;
                 default: return CharacterControl.CharacterState.mining;
             }
         }
@@ -71,7 +71,7 @@ public class HarvestableObject : MonoBehaviour, IInteractable
 
     internal void collectResource()
     {
-        StartCoroutine(collectResourceIE(ResourcesManager.instance.getResourceTime(resource)));
+        StartCoroutine(collectResourceIE(ResourceManager.instance.getResourceTime(resource)));
     }
 
     private IEnumerator collectResourceIE(float time)
@@ -108,14 +108,14 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         breakCoroutine = true;
     }
 
-    public ResourcesManager.Resources getResourceType()
+    public ResourceManager.Resource getResourceType()
     {
         return resource;
     }
 
     private void noResources()
     {
-        StartCoroutine(hideObjectIE(ResourcesManager.instance.getResourceObjectTime(resource)));
+        StartCoroutine(hideObjectIE(ResourceManager.instance.getResourceObjectTime(resource)));
     }
 
 }
