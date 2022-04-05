@@ -10,7 +10,7 @@ public class CharacterControl : MonoBehaviour
     float characterInventory = 8;
     float characterInventoryMax = 10;
 
-    ResourcesManager.Resources resourceType/* = ResourcesManager.Resources.Stone*/;
+    ResourceManager.Resource resourceType/* = ResourcesManager.Resources.Stone*/;
     HarvestableObject harvest;
 
     StorageItem storage;
@@ -277,7 +277,7 @@ public class CharacterControl : MonoBehaviour
         Debug.Log(characterInventory);
     }
 
-    public ResourcesManager.Resources getResourceType()
+    public ResourceManager.Resource getResourceType()
     {
         return resourceType;
     }
@@ -325,7 +325,7 @@ public class CharacterControl : MonoBehaviour
     private GameObject findNearestHarvestableObject()
     {
         GameObject nearest = null; 
-        foreach(GameObject g in ResourcesManager.instance.getHarvestableObjectsList())
+        foreach(GameObject g in ResourceManager.instance.getHarvestableObjectsList())
         {
             if (nearest == null)
             {
@@ -342,7 +342,7 @@ public class CharacterControl : MonoBehaviour
     private GameObject findNearestStorageItemObject()
     {
         GameObject nearest = null;
-        foreach (GameObject g in ResourcesManager.instance.getStorageItemsList())
+        foreach (GameObject g in ResourceManager.instance.getStorageItemsList())
         {
             if (nearest == null)
             {

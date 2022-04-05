@@ -7,9 +7,9 @@ public class Item
     private string itemName;
     private int amount;
     private int cost;
-    private ResourcesManager.Resources resourceType;
+    private ResourceManager.Resource resourceType;
      
-    public Item(string itemName, int amount, int cost, ResourcesManager.Resources resourceType)
+    public Item(string itemName, int amount, int cost, ResourceManager.Resource resourceType)
     {
         this.itemName = itemName;
         this.amount = amount;

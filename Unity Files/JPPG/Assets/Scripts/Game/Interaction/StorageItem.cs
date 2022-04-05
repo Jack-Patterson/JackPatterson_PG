@@ -8,12 +8,12 @@ public class StorageItem : MonoBehaviour, IInteractable
     
     float currentInventory = 0;
     float maxInventory = 20;
-    ResourcesManager.Resources resources;
+    ResourceManager.Resource resources;
 
 
     void Start()
     {
-        ResourcesManager.instance.addToStorageItems(this.gameObject);
+        ResourceManager.instance.addToStorageItems(gameObject);
     }
 
     void Update()
@@ -28,7 +28,7 @@ public class StorageItem : MonoBehaviour, IInteractable
         return CharacterControl.CharacterState.storing;
     }
 
-    internal void giveItem(ResourcesManager.Resources resources, float amount)
+    internal void giveItem(ResourceManager.Resource resources, float amount)
     {
         this.resources = resources;
         currentInventory += amount;
