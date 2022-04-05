@@ -21,11 +21,11 @@ public class StorageItem : MonoBehaviour, IInteractable
         
     }
 
-    public CharacterControl.CharacterState interact(CharacterControl characterControl)
+    public ResourceManager.Resource interact(CharacterControl characterControl)
     {
         this.characterControl = characterControl;
         this.characterControl.IAmStorage(this);
-        return CharacterControl.CharacterState.storing;
+        return resources;
     }
 
     internal void giveItem(ResourceManager.Resource resources, float amount)

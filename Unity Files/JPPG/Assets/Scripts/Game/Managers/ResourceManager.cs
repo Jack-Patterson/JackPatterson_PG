@@ -6,6 +6,7 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance;
     public enum Resource {Stone, Gold, Wood, Food, MeleeSkill}
+    CharacterControl.Job job;
 
     internal Item stone;
     internal Item gold;
@@ -24,6 +25,7 @@ public class ResourceManager : MonoBehaviour
     private Vector2 maxTownBounds = new Vector2(20f, 15f);
 
     private List<GameObject> harvestableObjects = new List<GameObject>();
+
     private List<GameObject> storageItems = new List<GameObject>();
 
     private void Awake()
@@ -161,5 +163,17 @@ public class ResourceManager : MonoBehaviour
     internal List<GameObject> getStorageItemsList()
     {
         return storageItems;
+    }
+
+    internal Resource getJobResource(CharacterControl.Job job)
+    {
+        switch (job)
+        {
+            case CharacterControl.Job.Lumberjack: return Resource.Wood;
+            case CharacterControl.Job.Miner: return Resource.Stone;
+            case CharacterControl.Job.Farmer: return Resource.Food;
+            case CharacterControl.Job.Fighter: return Resource.MeleeSkill;
+            default: return Resource.Wood;
+        }
     }
 }

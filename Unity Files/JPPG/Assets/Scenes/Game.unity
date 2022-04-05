@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641377, b: 0.5748183, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.496414, b: 0.57481885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -24608,7 +24608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &842232084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31755,7 +31755,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1088382894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a18bbaba21098a40a87c86fb29b66f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e3088a0a6768e04fa988fcb555d99f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   treePrefab: {fileID: 2552304253716069355, guid: b691931f5e728a7428e64394f8ffc2c6, type: 3}
@@ -58688,6 +58688,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 2612655088106113178, guid: 117c9981d05365849852442744f10596, type: 3}
+      propertyPath: job
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2612655088106113178, guid: 117c9981d05365849852442744f10596, type: 3}
       propertyPath: objToGet
       value: 
