@@ -7,12 +7,12 @@ using UnityEngine.AI;
 public class HarvestableObject : MonoBehaviour, IInteractable
 {
     CharacterControl character;
-    public ResourceManager.Resource resource;
+    [SerializeField]
+    private ResourceManager.Resource resource;
     
     float maxResourceAmount;
     float resourceAmount;
     float collectRate = 1;
-    float time;
 
     GameObject thisGO;
 
@@ -62,11 +62,11 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         }
     }
 
-    public CharacterControl.CharacterState interact(CharacterControl NPC)
+    public ResourceManager.Resource interact(CharacterControl NPC)
     {
         character = NPC;
         character.IAmHarvestable(this);
-        return AnimationFor;
+        return resource;
     }
 
     internal void collectResource()
@@ -116,6 +116,11 @@ public class HarvestableObject : MonoBehaviour, IInteractable
     private void noResources()
     {
         StartCoroutine(hideObjectIE(ResourceManager.instance.getResourceObjectTime(resource)));
+    }
+
+    internal ResourceManager.Resource GetResource()
+    {
+        return resource;
     }
 
 }

@@ -14,17 +14,17 @@ public class CharacterControl : MonoBehaviour
     HarvestableObject harvest;
 
     StorageItem storage;
-    Inventory inventory;
-
+    
     IInteractable interactableObject;
 
-    public enum CharacterState {walkingTo, idle, mining, practice, reading, storing};
+    public enum CharacterState {walkingToJob, idle, DoingJob, ReturningFromJob, ReturningToRestPosition, mining, practice, reading, storing, resting};
     CharacterState currentState = CharacterState.idle;
     CharacterState lastState = CharacterState.idle;
 
-    public enum Job { None, Swordsman, Archer, Miner, Lumberjack }
+    public enum Job { None, Fighter, Scholar, Miner, Lumberjack, Farmer }
     [SerializeField]
     Job job = Job.None;
+    bool rested = true;
 
     // Getting Elements from this gameobject or others
     NavMeshAgent agent;
@@ -32,12 +32,6 @@ public class CharacterControl : MonoBehaviour
     Animator animator;
     Rigidbody rigidBody;
     CapsuleCollider capsule;
-
-    /*// temp
-    public GameObject objToGet;
-    public GameObject objToGet2;
-    public GameObject objToGet3;*/
-    private GameObject currentTarget;
 
     GameObject standPos;
 
@@ -68,56 +62,123 @@ public class CharacterControl : MonoBehaviour
 
         findObject();
         setObjectStateOff();
-
-        currentTarget = null;
-        //standPos = GetChildWithName(objToGet2, "StandPosition");
     }
 
     void Update()
     {
         CharacterStates();
-
-        /*// Will only check these if the game is not in "Build Mode"
-        // if the mode is not setting to is currently building check the following
-        if (Manager.instance.getBuildMode())
-        {
-            return;
-        }
-
-        // Temp allows char to move to the rock
-
-        if (currentTarget != null)
-        {
-            // attempt to fix character not stopping move animation once reaching the dummy
-            
-        }*/
     }
 
     public void CharacterStates()
     {
+        CheckLastState();
+
         switch (currentState)
         {
             case CharacterState.idle:
-                CheckLastState();
+                //if (rested && (job != Job.None))
+                //{
+                //    if (characterInventory == characterInventoryMax)
+                //    {
+                //        GameObject target = findNearestStorageItemObject();
+                //        setTarget(target.transform.position);
+                //        currentState = CharacterState.walkingToJob;
+                //    }
+                //    else
+                //    {
+                        GameObject target = findNearestHarvestableObject();
+                        setTarget(target.transform.position);
+                        currentState = CharacterState.walkingToJob;
+                //    }
+                //}
 
-                if (Input.GetKeyDown(KeyCode.B))
-                {
-                    GameObject target = findNearestHarvestableObject();
-                    setTarget(target.transform.position);
-                    currentState = CharacterState.walkingTo;
-                }
+                //if (!rested && job != Job.None)
+                //{
+                //    setTarget(new Vector3(-30, 0, -13));
+                //    currentState = CharacterState.walkingToJob;
+                //}
+                
+                break;
 
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    GameObject target = findNearestStorageItemObject();
-                    setTarget(target.transform.position);
-                    currentState = CharacterState.walkingTo;
+            case CharacterState.walkingToJob:
+                if (agent.remainingDistance < agent.stoppingDistance)
+                {   
+                    Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
+
+                    foreach (Collider c in cols)
+                    {
+                        interactableObject = c.GetComponent<IInteractable>();
+
+                        if (interactableObject != null)
+                        {
+                            interactableObject.interact(this);
+
+                            transform.LookAt(c.transform);
+
+                            currentState = CharacterState.DoingJob;
+
+                            switch (resourceType)
+                            {
+                                case ResourceManager.Resource.Stone:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.Wood:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.Food:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.MeleeSkill:
+                                    animator.SetBool("isMining", true);
+                                    sword.SetActive(true);
+                                    shield.SetActive(true);
+                                    break;
+                            }
+                        }
+                    }
                 }
                 break;
 
-            case CharacterState.walkingTo:
-                CheckLastState();
 
+
+            case CharacterState.DoingJob:
+
+                if (characterInventory >= characterInventoryMax)
+                {
+                    currentState = CharacterState.ReturningFromJob;
+                    switch (resourceType)
+                    {
+                        case ResourceManager.Resource.Stone:
+                            animator.SetBool("isMining", false);
+                            pickaxe.SetActive(false);
+                            setTarget(findNearestStorageItemObject().transform.position);
+                            break;
+                        case ResourceManager.Resource.Wood:
+                            animator.SetBool("isMining", false);
+                            pickaxe.SetActive(false);
+                            setTarget(findNearestStorageItemObject().transform.position);
+                            break;
+                        case ResourceManager.Resource.Food:
+                            animator.SetBool("isMining", false);
+                            pickaxe.SetActive(false);
+                            setTarget(findNearestStorageItemObject().transform.position);
+                            break;
+                        case ResourceManager.Resource.MeleeSkill:
+                            animator.SetBool("isMining", false);
+                            sword.SetActive(false);
+                            shield.SetActive(false);
+                            setTarget(findNearestStorageItemObject().transform.position);
+                            break;
+                    }
+
+                }
+                break;
+
+
+            case CharacterState.ReturningFromJob:
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
                     Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
@@ -128,17 +189,41 @@ public class CharacterControl : MonoBehaviour
 
                         if (interactableObject != null)
                         {
-                            currentState = interactableObject.interact(this);
+                            interactableObject.interact(this);
 
                             transform.LookAt(c.transform);
+
+                            currentState = CharacterState.storing;
+
+                            switch (resourceType)
+                            {
+                                case ResourceManager.Resource.Stone:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.Wood:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.Food:
+                                    animator.SetBool("isMining", true);
+                                    pickaxe.SetActive(true);
+                                    break;
+                                case ResourceManager.Resource.MeleeSkill:
+                                    animator.SetBool("isMining", true);
+                                    sword.SetActive(true);
+                                    shield.SetActive(true);
+                                    break;
+                            }
                         }
                     }
                 }
+
                 break;
 
-            case CharacterState.mining:
-                CheckLastState();
 
+
+            case CharacterState.mining:
                 animator.SetBool("isMining", true);
                 pickaxe.SetActive(true);
 
@@ -146,20 +231,18 @@ public class CharacterControl : MonoBehaviour
                 {
                     currentState = CharacterState.idle;
                 }
+                rested = false;
                 break;
 
             case CharacterState.practice:
-                CheckLastState();
-
                 animator.SetBool("isMining", true);
                 sword.SetActive(true);
                 shield.SetActive(true);
 
+                rested = false;
                 break;
 
             case CharacterState.storing:
-                CheckLastState();
-
                 storage.giveItem(resourceType, characterInventory);
                 // temp anim as is unused and will show it working
                 animator.SetBool("isWalkingBackward", true);
@@ -167,7 +250,12 @@ public class CharacterControl : MonoBehaviour
                 {
                     currentState = CharacterState.idle;
                 }
+                rested = false;
 
+                break;
+
+            case CharacterState.resting:
+                rest(5);
                 break;
         }
     }
@@ -214,7 +302,7 @@ public class CharacterControl : MonoBehaviour
 
                 break;
 
-            case CharacterState.walkingTo:
+            case CharacterState.walkingToJob:
                 // Clears any previous interactable objects
                 if (interactableObject != null)
                 {
@@ -244,6 +332,10 @@ public class CharacterControl : MonoBehaviour
             case CharacterState.reading:
                 //animator.SetBool("isLearning", false);
                 break;
+
+            case CharacterState.resting:
+                
+                break;
         }
 
         lastState = currentState;
@@ -253,11 +345,6 @@ public class CharacterControl : MonoBehaviour
     {
         harvest = harvestableObject;
         resourceType = harvest.getResourceType();
-    }
-
-    internal void IAmInventory(Inventory inventory)
-    {
-        this.inventory = inventory;
     }
 
     internal void IAmStorage(StorageItem storage)
@@ -293,21 +380,6 @@ public class CharacterControl : MonoBehaviour
         Debug.Log("Inventory amount: " + characterInventory);
     }
 
-    // Gets the child of an object other than the one this script is attached to, in this case looking for the training dummy
-    GameObject GetChildWithName(GameObject obj, string name)
-    {
-        Transform trans = obj.transform;
-        Transform childTrans = trans.Find(name);
-        if (childTrans != null)
-        {
-            return childTrans.gameObject;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     private void findObject()
     {
         pickaxe = GameObject.Find("Pickaxe");
@@ -327,11 +399,12 @@ public class CharacterControl : MonoBehaviour
         GameObject nearest = null; 
         foreach(GameObject g in ResourceManager.instance.getHarvestableObjectsList())
         {
+            HarvestableObject ho = g.GetComponent<HarvestableObject>();
             if (nearest == null)
             {
                 nearest = g;
             }
-            if (Vector3.Distance(transform.position, g.transform.position) < Vector3.Distance(transform.position, nearest.transform.position))
+            if (Vector3.Distance(transform.position, g.transform.position) < Vector3.Distance(transform.position, nearest.transform.position) && ResourceManager.instance.getJobResource(job) == ho.GetResource())
             {
                 nearest = g;
             }
@@ -355,6 +428,20 @@ public class CharacterControl : MonoBehaviour
         }
 
         return nearest;
+    }
+
+    private void rest(float time)
+    {
+        StartCoroutine(restIE(time));
+    }
+
+    private IEnumerator restIE(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Debug.Log("Rested");
+        rested = true;
+        currentState = CharacterState.idle;
     }
 
 }

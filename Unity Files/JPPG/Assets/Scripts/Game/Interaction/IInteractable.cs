@@ -4,6 +4,6 @@ using UnityEngine;
 
 interface IInteractable 
 {
-    CharacterControl.CharacterState interact(CharacterControl NPC);
+   ResourceManager.Resource interact(CharacterControl NPC);
 
 }
