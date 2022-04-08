@@ -5,8 +5,8 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance;
-    public enum Resource {Stone, Gold, Wood, Food, MeleeSkill}
-    CharacterControl.Job job;
+    public enum Resource {Stone, Wood, Food, MeleeSkill}
+    private CharacterControl.Job job;
 
     internal Item stone;
     internal Item gold;
@@ -41,10 +41,11 @@ public class ResourceManager : MonoBehaviour
     void Start()
     {
         stone = new Item("Stone", 0, 40, Resource.Stone);
-        gold = new Item("Gold", 0, 1, Resource.Gold);
         wood = new Item("Wood", 0, 20, Resource.Wood);
         food = new Item("Food", 0, 20, Resource.Food);
         meleeSkill = new Item("Melee Skill", 0, 20, Resource.MeleeSkill);
+
+        gold = new Item("Gold", 0, 1);
 
         heightFinder = GameObject.Find("objectHeightFinder");
 
@@ -72,7 +73,6 @@ public class ResourceManager : MonoBehaviour
         {
             case Resource.Stone: return stone;
             case Resource.Wood: return wood;
-            case Resource.Gold: return gold;
             case Resource.Food: return food;
             case Resource.MeleeSkill: return meleeSkill;
             default: return null;
@@ -87,7 +87,6 @@ public class ResourceManager : MonoBehaviour
             case Resource.Stone: return 5f;
             case Resource.MeleeSkill: return 2f;
             case Resource.Wood: return 3f;
-            case Resource.Gold: return 1f;
             default: return 3f;
         }
     }
@@ -148,6 +147,16 @@ public class ResourceManager : MonoBehaviour
         }
 
         return pos;
+    }
+
+    internal void addToHarvestableItems(GameObject harvestableItem)
+    {
+        harvestableObjects.Add(harvestableItem);
+    }
+
+    internal void removeFromHarvestableItems(GameObject harvestableItem)
+    {
+        harvestableObjects.Remove(harvestableItem);
     }
 
     public List<GameObject> getHarvestableObjectsList()

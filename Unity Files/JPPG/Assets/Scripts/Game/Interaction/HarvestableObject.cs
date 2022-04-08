@@ -14,8 +14,6 @@ public class HarvestableObject : MonoBehaviour, IInteractable
     float resourceAmount;
     float collectRate = 1;
 
-    GameObject thisGO;
-
     bool coroutineStarted = false;
     bool breakCoroutine = false;
 
@@ -23,7 +21,7 @@ public class HarvestableObject : MonoBehaviour, IInteractable
 
     void Start()
     {
-        thisGO = this.gameObject;
+        ResourceManager.instance.addToHarvestableItems(gameObject);
 
         maxResourceAmount = 10;
         resourceAmount = maxResourceAmount;
@@ -36,6 +34,12 @@ public class HarvestableObject : MonoBehaviour, IInteractable
             return;
         }
 
+        if (character.getInventory() >= character.getMaxInventory())
+        {
+            //character.setHarvestObjectNull();
+            wait(5);
+        }
+
         if (!coroutineStarted && resourceAmount > 0)
         {
             coroutineStarted = true;
@@ -45,20 +49,6 @@ public class HarvestableObject : MonoBehaviour, IInteractable
         if (resourceAmount <= 0)
         {
             noResources();
-        }
-    }
-
-    CharacterControl.CharacterState AnimationFor
-    {
-        get
-        {
-            switch (resource)
-            {
-                case ResourceManager.Resource.Food: return CharacterControl.CharacterState.mining;
-                case ResourceManager.Resource.Stone: return CharacterControl.CharacterState.mining;
-                case ResourceManager.Resource.MeleeSkill: return CharacterControl.CharacterState.practice;
-                default: return CharacterControl.CharacterState.mining;
-            }
         }
     }
 
@@ -92,23 +82,22 @@ public class HarvestableObject : MonoBehaviour, IInteractable
     private IEnumerator hideObjectIE(float time)
     {
         previousPos = transform.position;
-
+        ResourceManager.instance.removeFromHarvestableItems(gameObject);
         transform.position = new Vector3(9999, -1000, 9999);
-        thisGO.SetActive(false);
 
         yield return new WaitForSeconds(time);
 
-        thisGO.SetActive(true);
+        ResourceManager.instance.addToHarvestableItems(gameObject);
         transform.position = previousPos;
         resourceAmount = maxResourceAmount;
     }
 
-    public void BreakCoroutine()
+    internal void BreakCoroutine()
     {
         breakCoroutine = true;
     }
 
-    public ResourceManager.Resource getResourceType()
+    internal ResourceManager.Resource getResourceType()
     {
         return resource;
     }
@@ -121,6 +110,19 @@ public class HarvestableObject : MonoBehaviour, IInteractable
     internal ResourceManager.Resource GetResource()
     {
         return resource;
+    }
+
+    private void wait(float time)
+    {
+        StartCoroutine(waitIE(time));
+    }
+
+    private IEnumerator waitIE(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        coroutineStarted = false;
+        breakCoroutine = false;
     }
 
 }

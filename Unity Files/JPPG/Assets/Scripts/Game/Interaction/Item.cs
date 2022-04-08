@@ -11,12 +11,18 @@ public class Item
      
     public Item(string itemName, int amount, int cost, ResourceManager.Resource resourceType)
     {
-        this.itemName = itemName;
-        this.amount = amount;
-        this.cost = cost;
-        this.resourceType = resourceType;
+        setName(itemName);
+        setAmount(amount);
+        setCost(cost);
+        setResource(resourceType);
     }
     
+    public Item(string itemName, int amount, int cost)
+    {
+        setName(itemName);
+        setAmount(amount);
+        setCost(cost);
+    }
 
     void Start()
     {
@@ -43,6 +49,11 @@ public class Item
         return cost;
     }
 
+    public ResourceManager.Resource GetResource()
+    {
+        return resourceType;
+    }
+
     public void setName(string itemName)
     {
         this.itemName = itemName;
@@ -61,6 +72,11 @@ public class Item
     public void setCost(int cost)
     {
         this.cost = cost;
+    }
+
+    public void setResource(ResourceManager.Resource resource)
+    {
+        this.resourceType = resource;
     }
 
 }
