@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class CharacterControl : MonoBehaviour
 {
 
-    float characterInventory = 8;
+    float characterInventory;
     float characterInventoryMax = 10;
 
     ResourceManager.Resource resourceType/* = ResourcesManager.Resources.Stone*/;
@@ -24,7 +24,6 @@ public class CharacterControl : MonoBehaviour
     public enum Job { None, Fighter, Scholar, Miner, Lumberjack, Farmer }
     [SerializeField]
     Job job = Job.None;
-    bool rested = true;
 
     // Getting Elements from this gameobject or others
     NavMeshAgent agent;
@@ -46,6 +45,8 @@ public class CharacterControl : MonoBehaviour
     GameObject sword;
     GameObject shield;
 
+    bool resting;
+
     void Start()
     {
         
@@ -62,6 +63,9 @@ public class CharacterControl : MonoBehaviour
 
         findObject();
         setObjectStateOff();
+
+        characterInventory = 8;
+        resting = false;
     }
 
     void Update()
@@ -76,35 +80,16 @@ public class CharacterControl : MonoBehaviour
         switch (currentState)
         {
             case CharacterState.idle:
-                //if (rested && (job != Job.None))
-                //{
-                //    if (characterInventory == characterInventoryMax)
-                //    {
-                //        GameObject target = findNearestStorageItemObject();
-                //        setTarget(target.transform.position);
-                //        currentState = CharacterState.walkingToJob;
-                //    }
-                //    else
-                //    {
-                        GameObject target = findNearestHarvestableObject();
-                        setTarget(target.transform.position);
-                        currentState = CharacterState.walkingToJob;
-                //    }
-                //}
-
-                //if (!rested && job != Job.None)
-                //{
-                //    setTarget(new Vector3(-30, 0, -13));
-                //    currentState = CharacterState.walkingToJob;
-                //}
-                
+                GameObject target = findNearestHarvestableObject();
+                setTarget(target.transform.position);
+                currentState = CharacterState.walkingToJob;
                 break;
-
+            
             case CharacterState.walkingToJob:
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {   
                     Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
-
+                    
                     foreach (Collider c in cols)
                     {
                         interactableObject = c.GetComponent<IInteractable>();
@@ -141,8 +126,6 @@ public class CharacterControl : MonoBehaviour
                     }
                 }
                 break;
-
-
 
             case CharacterState.DoingJob:
 
@@ -194,53 +177,18 @@ public class CharacterControl : MonoBehaviour
                             transform.LookAt(c.transform);
 
                             currentState = CharacterState.storing;
-
-                            switch (resourceType)
-                            {
-                                case ResourceManager.Resource.Stone:
-                                    animator.SetBool("isMining", true);
-                                    pickaxe.SetActive(true);
-                                    break;
-                                case ResourceManager.Resource.Wood:
-                                    animator.SetBool("isMining", true);
-                                    pickaxe.SetActive(true);
-                                    break;
-                                case ResourceManager.Resource.Food:
-                                    animator.SetBool("isMining", true);
-                                    pickaxe.SetActive(true);
-                                    break;
-                                case ResourceManager.Resource.MeleeSkill:
-                                    animator.SetBool("isMining", true);
-                                    sword.SetActive(true);
-                                    shield.SetActive(true);
-                                    break;
-                            }
                         }
                     }
                 }
 
                 break;
 
-
-
-            case CharacterState.mining:
-                animator.SetBool("isMining", true);
-                pickaxe.SetActive(true);
-
-                if (characterInventory == characterInventoryMax)
+            case CharacterState.ReturningToRestPosition:
+                if (agent.remainingDistance < agent.stoppingDistance)
                 {
-                    currentState = CharacterState.idle;
+                    currentState = CharacterState.resting;
                 }
-                rested = false;
-                break;
-
-            case CharacterState.practice:
-                animator.SetBool("isMining", true);
-                sword.SetActive(true);
-                shield.SetActive(true);
-
-                rested = false;
-                break;
+                    break;
 
             case CharacterState.storing:
                 storage.giveItem(resourceType, characterInventory);
@@ -248,14 +196,18 @@ public class CharacterControl : MonoBehaviour
                 animator.SetBool("isWalkingBackward", true);
                 if (characterInventory == 0)
                 {
-                    currentState = CharacterState.idle;
+                    currentState = CharacterState.ReturningToRestPosition;
+                    setTarget(new Vector3(-31, 0, -12));
                 }
-                rested = false;
-
                 break;
 
             case CharacterState.resting:
-                rest(5);
+                if (!resting)
+                {
+                    rest(5);
+                    resting = true;
+                }
+                
                 break;
         }
     }
@@ -316,6 +268,10 @@ public class CharacterControl : MonoBehaviour
                 animator.SetBool("isWalkingForward", false);
                 break;
 
+            case CharacterState.ReturningToRestPosition:
+                animator.SetBool("isWalkingForward", false);
+                break;
+
             case CharacterState.mining:
                 animator.SetBool("isMining", false);
                 break;
@@ -335,6 +291,11 @@ public class CharacterControl : MonoBehaviour
 
             case CharacterState.resting:
                 
+                break;
+
+            case CharacterState.ReturningFromJob:
+                animator.SetBool("isWalkingForward", false);
+                pickaxe.SetActive(false);
                 break;
         }
 
@@ -364,17 +325,38 @@ public class CharacterControl : MonoBehaviour
         Debug.Log(characterInventory);
     }
 
-    public ResourceManager.Resource getResourceType()
+    internal ResourceManager.Resource getResourceType()
     {
         return resourceType;
     }
 
-    public float getInventory()
+    internal float getInventory()
     {
         return characterInventory;
     }
 
-    public void removeFromInventory(float rate)
+    internal float getMaxInventory()
+    {
+        return characterInventoryMax;
+    }
+
+    internal void setHarvestObjectNull()
+    {
+        if (harvest != null)
+        {
+            harvest = null;
+        }
+    }
+
+    internal void setStorageObjectNull()
+    {
+        if (storage != null)
+        {
+            storage = null;
+        }
+    }
+
+    internal void removeFromInventory(float rate)
     {
         characterInventory -= rate;
         Debug.Log("Inventory amount: " + characterInventory);
@@ -440,8 +422,8 @@ public class CharacterControl : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         Debug.Log("Rested");
-        rested = true;
         currentState = CharacterState.idle;
+        resting = false;
     }
 
 }

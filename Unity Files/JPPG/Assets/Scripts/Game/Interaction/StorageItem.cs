@@ -4,38 +4,72 @@ using UnityEngine;
 
 public class StorageItem : MonoBehaviour, IInteractable
 {
-    CharacterControl characterControl;
+    CharacterControl character;
     
-    float currentInventory = 0;
+    float currentInventory;
     float maxInventory = 20;
-    ResourceManager.Resource resources;
+    ResourceManager.Resource resource;
+
+    bool coroutineStarted = false;
+    bool breakCoroutine;
+    float collectRate = 1;
 
 
     void Start()
     {
+        currentInventory = 0;
+
         ResourceManager.instance.addToStorageItems(gameObject);
     }
 
     void Update()
     {
-        
+        /*if (!coroutineStarted && currentInventory < maxInventory)
+        {
+            coroutineStarted = true;
+            collectResource();
+        }*/
     }
 
     public ResourceManager.Resource interact(CharacterControl characterControl)
     {
-        this.characterControl = characterControl;
-        this.characterControl.IAmStorage(this);
-        return resources;
+        this.character = characterControl;
+        this.character.IAmStorage(this);
+        return resource;
     }
 
-    internal void giveItem(ResourceManager.Resource resources, float amount)
+    internal void giveItem(ResourceManager.Resource resource, float amount)
     {
-        this.resources = resources;
+        this.resource = resource;
         currentInventory += amount;
 
-        characterControl.removeFromInventory(amount);
+        character.removeFromInventory(amount);
         Debug.Log("Storage Item Amount: " + currentInventory);
     }
 
+    internal void collectResource()
+    {
+        StartCoroutine(collectResourceIE(ResourceManager.instance.getResourceTime(resource)));
+    }
+
+    private IEnumerator collectResourceIE(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        character.give(collectRate);
+        currentInventory += collectRate;
+
+        if (currentInventory <= 0 || breakCoroutine)
+        {
+            yield break;
+        }
+
+        coroutineStarted = false;
+    }
+
+    internal void BreakCoroutine()
+    {
+        breakCoroutine = true;
+    }
 
 }
