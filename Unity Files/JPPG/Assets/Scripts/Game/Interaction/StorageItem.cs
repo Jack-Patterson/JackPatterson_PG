@@ -13,6 +13,7 @@ public class StorageItem : MonoBehaviour, IInteractable
     bool coroutineStarted = false;
     bool breakCoroutine;
     float collectRate = 1;
+    float addedAmount = 0;
 
 
     void Start()
@@ -45,6 +46,19 @@ public class StorageItem : MonoBehaviour, IInteractable
 
         character.removeFromInventory(amount);
         Debug.Log("Storage Item Amount: " + currentInventory);
+
+        addedAmount += amount;
+
+        foreach(Item i in ResourceManager.instance.getItemList())
+        {
+            if (i.getName() != "Gold")
+            {
+                if (i.GetResource() == resource)
+                {
+                    i.addAmount(amount);
+                }
+            }
+        }
     }
 
     internal void collectResource()

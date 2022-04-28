@@ -5,23 +5,25 @@ using UnityEngine;
 public class Item
 {
     private string itemName;
-    private int amount;
+    private float amount;
     private int cost;
     private ResourceManager.Resource resourceType;
      
-    public Item(string itemName, int amount, int cost, ResourceManager.Resource resourceType)
+    public Item(string itemName, float amount, int cost, ResourceManager.Resource resourceType)
     {
         setName(itemName);
         setAmount(amount);
         setCost(cost);
         setResource(resourceType);
+        ResourceManager.instance.addItemToList(this);
     }
     
-    public Item(string itemName, int amount, int cost)
+    public Item(string itemName, float amount, int cost)
     {
         setName(itemName);
         setAmount(amount);
         setCost(cost);
+        ResourceManager.instance.addItemToList(this);
     }
 
     void Start()
@@ -39,7 +41,7 @@ public class Item
         return itemName;
     }
 
-    public int getAmount()
+    public float getAmount()
     {
         return amount;
     }
@@ -59,12 +61,12 @@ public class Item
         this.itemName = itemName;
     }
 
-    public void setAmount(int amount)
+    public void setAmount(float amount)
     {
         this.amount = amount;
     }
 
-    public void addAmount (int amount)
+    public void addAmount (float amount)
     {
         this.amount += amount;
     }

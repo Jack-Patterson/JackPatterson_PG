@@ -17,11 +17,11 @@ public class CharacterControl : MonoBehaviour
     
     IInteractable interactableObject;
 
-    public enum CharacterState {walkingToJob, idle, DoingJob, ReturningFromJob, ReturningToRestPosition, mining, practice, reading, storing, resting};
+    public enum CharacterState {walkingToJob, idle, DoingJob, ReturningFromJob, ReturningToRestPosition, mining, practice, reading, storing, resting, returnToIdlePos};
     CharacterState currentState = CharacterState.idle;
     CharacterState lastState = CharacterState.idle;
 
-    public enum Job { None, Fighter, Scholar, Miner, Lumberjack, Farmer }
+    public enum Job { None, Fighter, Miner, Lumberjack, Farmer }
     [SerializeField]
     Job job = Job.None;
 
@@ -47,6 +47,11 @@ public class CharacterControl : MonoBehaviour
 
     bool resting;
 
+    string name;
+    bool isGenderMale;
+
+    Vector3 target;
+
     void Start()
     {
         
@@ -64,8 +69,11 @@ public class CharacterControl : MonoBehaviour
         findObject();
         setObjectStateOff();
 
-        characterInventory = 8;
+        characterInventory = 0;
         resting = false;
+
+        isGenderMale = setGender();
+        name = Manager.instance.getName(isGenderMale);
     }
 
     void Update()
@@ -80,20 +88,24 @@ public class CharacterControl : MonoBehaviour
         switch (currentState)
         {
             case CharacterState.idle:
-                GameObject target = findNearestHarvestableObject();
-                setTarget(target.transform.position);
-                currentState = CharacterState.walkingToJob;
+
+                if (job != Job.None)
+                {
+                    GameObject target = findNearestHarvestableObject();
+                    setTarget(target.transform.position);
+                    currentState = CharacterState.walkingToJob;
+                }
                 break;
-            
+
             case CharacterState.walkingToJob:
                 if (agent.pathPending)
                 {
                     return;
                 }
                 if (agent.remainingDistance < agent.stoppingDistance)
-                {   
+                {
                     Collider[] cols = Physics.OverlapSphere(agent.destination, 3);
-                    
+
                     foreach (Collider c in cols)
                     {
                         interactableObject = c.GetComponent<IInteractable>();
@@ -192,7 +204,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     currentState = CharacterState.resting;
                 }
-                    break;
+                break;
 
             case CharacterState.storing:
                 storage.giveItem(resourceType, characterInventory);
@@ -211,15 +223,27 @@ public class CharacterControl : MonoBehaviour
                     rest(5);
                     resting = true;
                 }
-                
+
+                break;
+
+            case CharacterState.returnToIdlePos:
+                if (agent.pathPending)
+                {
+                    return;
+                }
+                if (agent.remainingDistance < agent.stoppingDistance)
+                {
+                    currentState = CharacterState.idle;
+                }
                 break;
         }
     }
 
-    // Allows Camera to focus and follow this character
     public void OnMouseDown()
     {
         CameraControl.instance.focusTrans = transform;
+        Manager.instance.setCharUIActive(true);
+        CharacterUI.instance.setCharacterFocus(this);
     }
 
     // Sets the agent target
@@ -227,6 +251,7 @@ public class CharacterControl : MonoBehaviour
     {
         animator.SetBool("isWalkingForward", true);
         agent.SetDestination(position);
+        target = position;
     }
 
     internal CharacterState getState()
@@ -428,6 +453,70 @@ public class CharacterControl : MonoBehaviour
         Debug.Log("Rested");
         currentState = CharacterState.idle;
         resting = false;
+    }
+
+    private bool setGender()
+    {
+        float gender = (float)new System.Random().NextDouble();
+
+        if (gender <= 0.5f)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    internal string getName()
+    {
+        return name;
+    }
+
+    internal void setJob(Job job)
+    {
+        this.job = job;
+        if (job == Job.None)
+        {
+            setTarget(new Vector3(-31, 0, -12));
+            currentState = CharacterState.returnToIdlePos;
+            animator.SetBool("isMining", false);
+        }
+    }
+
+    internal string currentStateEngl()
+    {
+        float dist = Vector3.Distance(agent.destination, target);
+        
+        switch (currentState)
+        {
+            case CharacterState.idle:
+                return "idling.";
+            case CharacterState.walkingToJob:
+                if (agent.pathPending)
+                {
+                    return "heading to job.";
+                }
+                return "heading to job. (" + dist.ToString("0.00") + "m)";
+            case CharacterState.DoingJob:
+                return "doing their job.";
+            case CharacterState.ReturningFromJob:
+                if (agent.pathPending)
+                {
+                    return "returning from job.";
+                }
+                return "returning from job. (" + dist.ToString("0.00") + "m)";
+            case CharacterState.resting:
+                return "resting.";
+            case CharacterState.ReturningToRestPosition:
+                if (agent.pathPending)
+                {
+                    return "heading to rest.";
+                }
+                return "heading to rest.(" + dist.ToString("0.00") + "m)";
+            case CharacterState.storing:
+                return "storing items.";
+            default:
+                return "idling.";
+        }
     }
 
 }

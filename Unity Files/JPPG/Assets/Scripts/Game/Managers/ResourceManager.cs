@@ -28,6 +28,8 @@ public class ResourceManager : MonoBehaviour
 
     private List<GameObject> storageItems = new List<GameObject>();
 
+    private List<Item> itemsList = new List<Item>();
+
     private void Awake()
     {
         if (instance != null)
@@ -64,7 +66,22 @@ public class ResourceManager : MonoBehaviour
 
     void Update()
     {
-       
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            gold.addAmount(100);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            wood.addAmount(20);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            stone.addAmount(10);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            food.addAmount(50);
+        }
     }
 
     public Item getResourceItem(Resource resource)
@@ -184,5 +201,15 @@ public class ResourceManager : MonoBehaviour
             case CharacterControl.Job.Fighter: return Resource.MeleeSkill;
             default: return Resource.Wood;
         }
+    }
+
+    internal void addItemToList(Item item)
+    {
+        itemsList.Add(item);
+    }
+
+    internal List<Item> getItemList()
+    {
+        return itemsList;
     }
 }
