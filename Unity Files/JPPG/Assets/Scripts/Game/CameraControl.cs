@@ -187,8 +187,15 @@ public class CameraControl : MonoBehaviour
         newZoom.x = Mathf.Clamp(newZoom.x, -panLimit.x, panLimit.x);
         newZoom.z = Mathf.Clamp(newZoom.z, -panLimit.y, panLimit.y);
         newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
-        cameraTrans.localPosition = Vector3.Lerp(cameraTrans.localPosition, newZoom, Time.deltaTime * movementTime);
+        cameraTrans.localPosition = Vector3.Lerp(cameraTrans.localPosition, newZoom, Time.deltaTime * movementTime);   
+    }
 
-        
+    internal bool hasFocus()
+    {
+        if (focusTrans != null)
+        {
+            return true;
+        }
+        return false;
     }
 }

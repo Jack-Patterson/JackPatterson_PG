@@ -13,6 +13,10 @@ public class Manager : MonoBehaviour
     bool buildModeWall;
 
     private GameObject charUI;
+    [SerializeField]
+    private GameObject gameMenuUI;
+
+    private List<CharacterControl> charList;
 
     private void Awake()
     {
@@ -22,17 +26,23 @@ public class Manager : MonoBehaviour
             return;
         }
         instance = this;
+        
+        charList = new List<CharacterControl>();
     }
 
     void Start()
     {
+        // Ensures build mode is off on start
         buildModeNormal = false;
         buildModeWall = false;
+        // Ensures menu information UI is off
         setCharUIActive(false);
+        setMenuUIActive(false);
     }
 
     void Update()
     {
+        // Toggles Build Mode - WIP
         if (Input.GetKeyDown(KeyCode.P))
         {
             buildModeWall = false;
@@ -46,6 +56,7 @@ public class Manager : MonoBehaviour
             }
         }
 
+        // Toggles Build Wall mode - WIP
         if (Input.GetKeyDown(KeyCode.U))
         {
             buildModeNormal = false;
@@ -58,7 +69,20 @@ public class Manager : MonoBehaviour
                 setBuildModeWall(true);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !CameraControl.instance.hasFocus())
+        {
+            if (gameMenuUI.activeSelf)
+            {
+                setMenuUIActive(false);
+            }
+            else
+            {
+                setMenuUIActive(true);
+            }
+        }
     }
+    
 
     public void setBuildModeNormal(bool buildMode)
     {
@@ -80,6 +104,7 @@ public class Manager : MonoBehaviour
         return buildModeWall;
     }
 
+    // Reads a list of names from a file and returns a random one based on gender
     internal string getName(bool isGenderMale)
     {
         string readFromFilePath;
@@ -99,6 +124,7 @@ public class Manager : MonoBehaviour
         return fileLines[pos];
     }
 
+    // retrieves and loads a sprite for the UI
     internal Sprite retrieveSprite(string job)
     {
         switch (job)
@@ -123,6 +149,7 @@ public class Manager : MonoBehaviour
         return null;
     }
 
+    // Sets and Toggles the character UI
     internal void setCharUI(GameObject charUI)
     {
         this.charUI = charUI;
@@ -131,6 +158,50 @@ public class Manager : MonoBehaviour
     internal void setCharUIActive(bool active)
     {
         charUI.SetActive(active);
+    }
+
+    // Sets and Toggles the Menu UI
+    internal void setMenuUI(GameObject gameMenuUI)
+    {
+        this.gameMenuUI = gameMenuUI;
+        //this.gameMenuUI = GameMenuUI.instance.gameObject;
+    }
+
+    internal void setMenuUIActive(bool active)
+    {
+        gameMenuUI.SetActive(active);
+        if (active)
+        {
+            setTime(0);
+        }
+        else
+        {
+            setTime(1);
+        }
+    }
+
+    internal void addCharList(CharacterControl character)
+    {
+        charList.Add(character);
+    }
+
+    internal void setTime(int level)
+    {
+        switch (level)
+        {
+            case 0:
+                Time.timeScale = 0;
+                break;
+            case 1:
+                Time.timeScale = 1;
+                break;
+            case 2:
+                Time.timeScale = 2;
+                break;
+            default:
+                Time.timeScale = 1;
+                break;
+        }
     }
 
 }

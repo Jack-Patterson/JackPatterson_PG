@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ForestCreature : MonoBehaviour
+public class ForestCreature : ControlScript
 {
     Animator animator;
     NavMeshAgent agent;
@@ -57,7 +57,7 @@ public class ForestCreature : MonoBehaviour
         }
     }
 
-    internal void setTarget(Vector3 position)
+    internal override void setTarget(Vector3 position)
     {
         agent.SetDestination(position);
     }
@@ -114,5 +114,10 @@ public class ForestCreature : MonoBehaviour
         {
             setTarget(moveTarget(out target));
         }
+    }
+
+    internal override void CharacterStates()
+    {
+        throw new System.NotImplementedException();
     }
 }

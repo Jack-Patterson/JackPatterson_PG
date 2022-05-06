@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CharacterControl : MonoBehaviour
+public class CharacterControl : ControlScript
 {
 
     float characterInventory;
@@ -32,12 +32,6 @@ public class CharacterControl : MonoBehaviour
     Rigidbody rigidBody;
     CapsuleCollider capsule;
 
-    GameObject standPos;
-
-    // Obtained from Capsule Collider
-    float capsuleHeight;
-    Vector3 capsuleCenter;
-
     // Mining Related
     GameObject pickaxe;
 
@@ -61,9 +55,6 @@ public class CharacterControl : MonoBehaviour
         rigidBody = GetComponentInChildren<Rigidbody>();
         capsule = GetComponentInChildren<CapsuleCollider>();
 
-        capsuleHeight = capsule.height;
-        capsuleCenter = capsule.center;
-
         agent.stoppingDistance = 4;
 
         findObject();
@@ -81,7 +72,7 @@ public class CharacterControl : MonoBehaviour
         CharacterStates();
     }
 
-    public void CharacterStates()
+    internal override void CharacterStates()
     {
         CheckLastState();
 
@@ -247,7 +238,7 @@ public class CharacterControl : MonoBehaviour
     }
 
     // Sets the agent target
-    public void setTarget(Vector3 position)
+    internal override void setTarget(Vector3 position)
     {
         animator.SetBool("isWalkingForward", true);
         agent.SetDestination(position);
