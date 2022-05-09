@@ -8,6 +8,10 @@ public class QuestsUI : MonoBehaviour
 {
     public static QuestsUI instance;
 
+    [SerializeField] private GameObject questObject1;
+    [SerializeField] private GameObject questObject2;
+    [SerializeField] private GameObject questObject3;
+
     private void Awake()
     {
         if (instance != null)
@@ -25,16 +29,11 @@ public class QuestsUI : MonoBehaviour
 
     void Update()
     {
-        addQuests();
+        
     }
 
-    private void addQuests()
+    private void assignQuests()
     {
-        int i = 1;
-        foreach (Quest q in QuestsManager.instance.getQuestsList())
-        {
-            TextMeshProUGUI questText = GameObject.Find("QuestText1").GetComponent<TextMeshProUGUI>();
 
-        }
     }
 }

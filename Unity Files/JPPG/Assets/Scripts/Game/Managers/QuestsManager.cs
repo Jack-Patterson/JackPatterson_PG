@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class QuestsManager : MonoBehaviour
 {
     public static QuestsManager instance;
 
-    Quest assignJob;
-    Quest mineResource;
-    Quest storeItem;
-
-    List<Quest> quests = new List<Quest>();
-
+    internal List<IQuestable> questsList = new List<IQuestable>();
 
     private void Awake()
     {
@@ -25,23 +21,11 @@ public class QuestsManager : MonoBehaviour
 
     void Start()
     {
-        assignJob = new Quest("Assign a villager a job", ".");
-        mineResource = new Quest("Mine a resource", ".");
-        storeItem = new Quest("Store an item", ".");
+
     }
 
     void Update()
     {
-        
-    }
 
-    internal void addToQuestsList(Quest quest)
-    {
-        quests.Add(quest);
-    }
-
-    internal List<Quest> getQuestsList()
-    {
-        return quests;
     }
 }

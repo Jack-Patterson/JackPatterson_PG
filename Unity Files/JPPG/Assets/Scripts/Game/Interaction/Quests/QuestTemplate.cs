@@ -2,27 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest
+public class QuestTemplate : MonoBehaviour, IQuestable
 {
-    private static int questID = 0;
+    public static QuestTemplate instance;
+    
     private string questName;
     private string questDescription;
     private bool questCompleted;
 
-    public Quest(string questName, string questDescription)
+    private void Awake()
     {
-        questID++;
-        setQuestName(questName);
-        setQuestDescription(questDescription);
-        setQuestCompleted(false);
-        QuestsManager.instance.addToQuestsList(this);
+        if (instance != null)
+        {
+            Debug.LogError($"More than one instance of this quest.");
+            return;
+        }
+        instance = this;
+
+        QuestsManager.instance.questsList.Add(this);
     }
 
-    internal int getQuestID()
+    private void Start()
     {
-        return questID;
+        setQuestCompleted(false);
+        setQuestName("");
+        setQuestDescription("");
     }
-    
+
+    public void interact()
+    {
+        setQuestCompleted(true);
+    }
+
     internal string getQuestName()
     {
         return questName;
@@ -52,4 +63,6 @@ public class Quest
     {
         this.questCompleted = questCompleted;
     }
+
+
 }
